@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # Claude Code
 .claude/
+
+# Screenshots and files saved from Claude
+Claude outputs/
