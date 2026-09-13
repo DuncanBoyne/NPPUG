@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
 import EventCard from '../components/EventCard.astro';
+import FirstMeetup from '../components/FirstMeetup.astro';
+import GetInvolved from '../components/GetInvolved.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 import { getCollection } from 'astro:content';
+import { SITE, STATS, COMMUNITY_PHOTOS } from '../config';
 
 const allEvents = await getCollection('events');
 
@@ -15,8 +18,10 @@ const isEventPast = (event: typeof allEvents[0]) => {
 
 const upcomingEvents = allEvents
   .filter(event => !isEventPast(event))
-  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
-  .slice(0, 3);
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const nextEvent = upcomingEvents[0];
+const moreEvents = upcomingEvents.slice(1, 3);
 
 const allPosts = await getCollection('blog');
 const recentPosts = allPosts
@@ -24,33 +29,218 @@ const recentPosts = allPosts
   .slice(0, 3);
 
 const allSpeakers = await getCollection('speakers');
-const speakerMap = Object.fromEntries(allSpeakers.map(s => [s.slug, s.data.name]));
+const speakerMap = Object.fromEntries(allSpeakers.map(s => [s.slug, s.data]));
+
+const nextEventSpeakers = nextEvent
+  ? nextEvent.data.speakers.map(slug => speakerMap[slug]).filter(Boolean)
+  : [];
+
+const nextEventDate = nextEvent?.data.date.toLocaleDateString('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  timeZone: 'UTC',
+});
+const nextEventStart = nextEvent?.data.date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+const nextEventEnd = nextEvent?.data.endDate?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+const nextEventCtaUrl = nextEvent
+  ? (nextEvent.data.registrationUrl ?? `/events/${nextEvent.slug}`)
+  : '/events';
+
+// Outcome-framed topic tiles: product + what attending helps you do.
+// Class names are written out in full so Tailwind's scanner picks them up.
+const topics = [
+  { name: 'Power Apps', outcome: 'Build apps without waiting for IT', bg: 'bg-power-apps/10', text: 'text-power-apps', icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' },
+  { name: 'Power Automate', outcome: 'Give hours back to your team', bg: 'bg-power-automate/10', text: 'text-power-automate', icon: 'M13 3v6h8l-8 12v-6H5l8-12z' },
+  { name: 'Power BI', outcome: "Answer questions your reports can't", bg: 'bg-power-bi/10', text: 'text-power-bi', icon: 'M4 5h4v14H4zM10 9h4v10h-4zM16 3h4v16h-4z' },
+  { name: 'Power Pages', outcome: 'Put your data on the web, securely', bg: 'bg-power-pages/10', text: 'text-power-pages', icon: 'M4 4h16v16H4V4zm2 2v12h12V6H6z' },
+  { name: 'Copilot Studio', outcome: 'Build agents that actually help', bg: 'bg-copilot-studio/10', text: 'text-copilot-studio', icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-13h2v6h-2zm0 8h2v2h-2z' },
+  { name: 'Dynamics 365', outcome: 'CRM & ERP that fit your business', bg: 'bg-secondary/10', text: 'text-secondary', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z' },
+  { name: 'Dataverse', outcome: 'One secure home for your data', bg: 'bg-primary/10', text: 'text-primary', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z' },
+  { name: 'Soft Skills', outcome: 'Present, persuade, and lead', bg: 'bg-accent/10', text: 'text-accent', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' },
+  { name: 'Careers', outcome: 'Meet local employers and peers', bg: 'bg-secondary/10', text: 'text-secondary', icon: 'M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z' },
+  { name: 'And More', outcome: 'AI, Fabric, Azure & beyond', bg: 'bg-primary/10', text: 'text-primary', icon: 'M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z' },
+];
 ---
 
-<BaseLayout title="Home">
-  <Hero
-    title="Norfolk Power Platform User Group"
-    subtitle="Connect, learn, share, and grow together. A community for Microsoft Power Platform enthusiasts across Norwich and Norfolk."
-    showCta={true}
-    ctaText="Join Our Next Event"
-    ctaLink="/events"
-    secondaryCta="Learn More"
-    secondaryCtaLink="/about"
-  />
-
-  <!-- Upcoming Events Section -->
-  <section class="py-16 bg-background-alt">
+<BaseLayout title="Home" description={SITE.tagline}>
+  <!-- ============ 1. Hero: identity + next event ============ -->
+  <section class="bg-gradient-to-br from-primary via-primary-dark to-secondary text-white py-16 md:py-24">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">Upcoming Events</h2>
-        <p class="text-text-light text-lg max-w-2xl mx-auto">
-          Join us for our regular meetups featuring technical demos, guest speakers, and networking opportunities.
-        </p>
-      </div>
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Identity -->
+        <div class="text-center lg:text-left">
+          <p class="uppercase tracking-widest text-white/80 font-semibold mb-4">Norfolk's Microsoft community</p>
+          <h1 class="text-4xl md:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
+            Free monthly meetups in Norwich for people who build with Microsoft
+          </h1>
+          <p class="text-xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0">
+            Power Platform, Power BI, Fabric, Dynamics 365, and Copilot — real speakers, real demos,
+            free pizza, no sales pitches. From your first flow to enterprise architecture.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <a
+              href={nextEventCtaUrl}
+              class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
+            >
+              {nextEvent ? 'Join the Next Meetup — Free' : 'See Our Events'}
+            </a>
+            <a
+              href="#first-meetup-heading"
+              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              First Time? What to Expect
+            </a>
+          </div>
+        </div>
 
-      {upcomingEvents.length > 0 ? (
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {upcomingEvents.map((event) => (
+        <!-- Next event card (fallback shown while nothing is scheduled) -->
+        {!nextEvent && (
+          <div class="bg-white text-text rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-secondary text-white px-6 py-2 font-semibold text-sm uppercase tracking-wide">
+              Next Meetup
+            </div>
+            <div class="p-6 md:p-8">
+              <h2 class="text-2xl font-bold mb-4">Next date announced soon</h2>
+              <p class="text-text-light mb-6">
+                We meet every month in Norwich. The next event goes up here first —
+                follow us on LinkedIn or check the events page so you don't miss it.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <a
+                  href={SITE.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 text-center bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
+                >
+                  Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span>
+                </a>
+                <a
+                  href="/events"
+                  class="flex-1 text-center border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition-colors"
+                >
+                  Past & Future Events
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+        {nextEvent && (
+          <div class="bg-white text-text rounded-2xl shadow-2xl overflow-hidden">
+            <div class="bg-secondary text-white px-6 py-2 font-semibold text-sm uppercase tracking-wide">
+              Next Meetup
+            </div>
+            <div class="p-6 md:p-8">
+              <h2 class="text-2xl font-bold mb-4">
+                <a href={`/events/${nextEvent.slug}`} class="hover:text-primary transition-colors">
+                  {nextEvent.data.title}
+                </a>
+              </h2>
+              <div class="space-y-2 text-text-light mb-5">
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>{nextEventDate}, {nextEventStart}{nextEventEnd && ` – ${nextEventEnd}`}</span>
+                </div>
+                <div class="flex items-center">
+                  <svg class="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>{nextEvent.data.venue}</span>
+                </div>
+              </div>
+
+              {nextEventSpeakers.length > 0 ? (
+                <div class="mb-6">
+                  <div class="text-sm font-semibold text-text mb-3">Speakers</div>
+                  <div class="space-y-3">
+                    {nextEventSpeakers.map((speaker) => (
+                      <div class="flex items-center">
+                        {speaker.image ? (
+                          <img src={speaker.image} alt="" class="w-10 h-10 rounded-full object-cover mr-3" />
+                        ) : (
+                          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold mr-3 text-sm" aria-hidden="true">
+                            {speaker.name.split(' ').map((n: string) => n[0]).join('')}
+                          </div>
+                        )}
+                        <div>
+                          <div class="font-semibold text-text text-sm">{speaker.name}</div>
+                          <div class="text-xs text-text-light">{speaker.title}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p class="text-text-light text-sm mb-6">{nextEvent.data.description}</p>
+              )}
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <a
+                  href={nextEventCtaUrl}
+                  class="flex-1 text-center bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
+                >
+                  Register Free
+                </a>
+                <a
+                  href={`/events/${nextEvent.slug}`}
+                  class="flex-1 text-center border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition-colors"
+                >
+                  Event Details
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. Proof bar ============ -->
+  <section class="bg-white border-b border-border" aria-label="Community facts">
+    <div class="container mx-auto px-4 py-8">
+      <dl class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {STATS.map((stat) => (
+          <div>
+            <dt class="sr-only">{stat.label}</dt>
+            <dd>
+              <span class="block text-3xl font-bold text-primary">{stat.value}</span>
+              <span class="block text-sm text-text-light mt-1">{stat.label}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 3. First meetup promise ============ -->
+  <FirstMeetup />
+
+  <!-- ============ 4. Community photos (shown once photos are added) ============ -->
+  {COMMUNITY_PHOTOS.length > 0 && (
+    <section class="py-16 bg-background-alt" aria-labelledby="photos-heading">
+      <div class="container mx-auto px-4">
+        <h2 id="photos-heading" class="text-3xl font-bold text-text mb-8 text-center">The Community in Action</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {COMMUNITY_PHOTOS.map((photo) => (
+            <img src={photo.src} alt={photo.alt} class="rounded-xl object-cover w-full h-40 shadow" loading="lazy" />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============ 5. More upcoming events ============ -->
+  {moreEvents.length > 0 && (
+    <section class="py-16 bg-background-alt">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">Coming Up After That</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+          {moreEvents.map((event) => (
             <EventCard
               title={event.data.title}
               date={event.data.date}
@@ -60,168 +250,100 @@ const speakerMap = Object.fromEntries(allSpeakers.map(s => [s.slug, s.data.name]
               description={event.data.description}
               slug={event.slug}
               isPast={false}
-              speakers={event.data.speakers.map(s => speakerMap[s] || s)}
+              speakers={event.data.speakers.map(s => speakerMap[s]?.name || s)}
             />
           ))}
         </div>
-      ) : (
-        <p class="text-center text-text-light">No upcoming events scheduled. Check back soon!</p>
-      )}
-
-      <div class="text-center">
-        <a href="/events" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
-          View All Events
-        </a>
+        <div class="text-center">
+          <a href="/events" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+            View All Events
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <!-- What We Cover Section -->
+  <!-- ============ 6. What we cover → what you'll get ============ -->
   <section class="py-16">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">What We Cover</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">What You'll Get Out of It</h2>
         <p class="text-text-light text-lg max-w-2xl mx-auto">
-          Our community explores the full Microsoft Power Platform ecosystem and beyond.
+          Every session is about doing something better at work — across the full Microsoft ecosystem.
         </p>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-power-apps/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-power-apps" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
+        {topics.map((topic) => (
+          <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
+            <div class:list={['w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full flex items-center justify-center', topic.bg]}>
+              <svg class:list={['w-6 h-6 md:w-8 md:h-8', topic.text]} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={topic.icon} />
+              </svg>
+            </div>
+            <h3 class="font-bold text-text mb-1 text-sm md:text-base">{topic.name}</h3>
+            <p class="text-xs md:text-sm text-text-light">{topic.outcome}</p>
           </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Power Apps</h3>
-          <p class="text-xs md:text-sm text-text-light">Build custom apps</p>
-        </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-power-automate/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-power-automate" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M13 3v6h8l-8 12v-6H5l8-12z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Power Automate</h3>
-          <p class="text-xs md:text-sm text-text-light">Automate workflows</p>
-        </div>
+  <!-- ============ 7. Get involved: speak / sponsor / volunteer ============ -->
+  <GetInvolved />
 
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-power-bi/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-power-bi" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 5h4v14H4zM10 9h4v10h-4zM16 3h4v16h-4z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Power BI</h3>
-          <p class="text-xs md:text-sm text-text-light">Data insights</p>
+  <!-- ============ 8. Sponsors ============ -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-text mb-4">Our Sponsors Keep Every Event Free</h2>
+        <p class="text-text-light text-lg mb-10">
+          Free venue, free pizza, free learning — that only happens because of the organisations below.
+          Please thank them when you see them.
+        </p>
+        <div class="flex flex-wrap justify-center items-center gap-10 mb-10">
+          <a href="https://gtptech.co.uk/" target="_blank" rel="noopener noreferrer" class="block">
+            <img src="/images/sponsors/GTPTech.png" alt="GTP Tech Recruitment — Official Recruitment Partner" class="h-16 object-contain" />
+            <span class="block text-sm text-text-light mt-2">Official Recruitment Partner<span class="sr-only"> (opens in new tab)</span></span>
+          </a>
         </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-power-pages/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-power-pages" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Power Pages</h3>
-          <p class="text-xs md:text-sm text-text-light">External websites</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-copilot-studio/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-copilot-studio" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Copilot Studio</h3>
-          <p class="text-xs md:text-sm text-text-light">Intelligent chatbots</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-secondary/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-secondary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Dynamics 365</h3>
-          <p class="text-xs md:text-sm text-text-light">Business applications</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Dataverse</h3>
-          <p class="text-xs md:text-sm text-text-light">Data platform</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-accent/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-accent" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Soft Skills</h3>
-          <p class="text-xs md:text-sm text-text-light">Communication & teamwork</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-secondary/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-secondary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">Career Advice</h3>
-          <p class="text-xs md:text-sm text-text-light">Growth & development</p>
-        </div>
-
-        <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-          <div class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-            <svg class="w-6 h-6 md:w-8 md:h-8 text-primary" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
-            </svg>
-          </div>
-          <h3 class="font-bold text-text mb-1 text-sm md:text-base">And More</h3>
-          <p class="text-xs md:text-sm text-text-light">AI, Azure & beyond</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/sponsors" class="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+            Meet Our Sponsors
+          </a>
+          <a href="/sponsorship" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors">
+            Become a Sponsor
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
+  <!-- ============ 9. About / EoEPPS credibility ============ -->
   <section class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-text mb-6">About Our Community</h2>
-        <p class="text-lg text-text-light mb-8">
-          Founded in 2025, the Norfolk Power Platform User Group brings together Microsoft Power Platform
-          enthusiasts from across Norwich and Norfolk. Whether you're a beginner or an enterprise expert,
-          you'll find a welcoming community here.
+        <h2 class="text-3xl md:text-4xl font-bold text-text mb-6">Built in Norfolk, for Norfolk</h2>
+        <p class="text-lg text-text-light mb-6">
+          Founded in {SITE.founded}, NPPUG brings together everyone in Norwich and Norfolk who works with
+          the Microsoft ecosystem — from beginners building their first flow to enterprise architects.
+          We're volunteers, and we're also the team behind the
+          <a href={SITE.eoepps} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark font-semibold">East of England Power Platform Summit<span class="sr-only"> (opens in new tab)</span></a>
+          — the region's community-led Power Platform conference.
         </p>
-        <div class="grid md:grid-cols-3 gap-8 mb-8">
-          <div class="text-center">
-            <div class="text-4xl font-bold text-primary mb-2">385+</div>
-            <div class="text-text-light">LinkedIn Followers</div>
-          </div>
-          <div class="text-center">
-            <div class="text-4xl font-bold text-primary mb-2">Free</div>
-            <div class="text-text-light">All Events</div>
-          </div>
-          <div class="text-center">
-            <div class="text-4xl font-bold text-primary mb-2">Monthly</div>
-            <div class="text-text-light">Meetups</div>
-          </div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/about" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors">
+            Our Story
+          </a>
+          <a href="/team" class="inline-block border-2 border-secondary text-secondary-dark px-6 py-3 rounded-lg font-semibold hover:bg-secondary hover:text-white transition-colors">
+            Meet the Team
+          </a>
         </div>
-        <a href="/about" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors">
-          Learn More About Us
-        </a>
       </div>
     </div>
   </section>
 
-  <!-- Latest Blog Posts -->
+  <!-- ============ 10. Latest updates ============ -->
   {recentPosts.length > 0 && (
     <section class="py-16">
       <div class="container mx-auto px-4">
@@ -259,30 +381,6 @@ const speakerMap = Object.fromEntries(allSpeakers.map(s => [s.slug, s.data.name]
     </section>
   )}
 
-  <!-- CTA Section -->
-  <section class="py-16 bg-primary text-white">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Join?</h2>
-      <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-        Connect with Power Platform enthusiasts in your area. Our events are free and open to all skill levels.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="https://www.linkedin.com/company/norfolk-power-platform-user-group/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-        >
-          Follow on LinkedIn
-          <span class="sr-only">(opens in new tab)</span>
-        </a>
-        <a
-          href="/contact"
-          class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-        >
-          Contact Us
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- ============ 11. Newsletter capture ============ -->
+  <NewsletterSignup />
 </BaseLayout>

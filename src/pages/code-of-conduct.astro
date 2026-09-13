@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout
+  title="Code of Conduct"
+  description="The Norfolk Power Platform User Group Code of Conduct — everyone is welcome, and everyone is looked after."
+>
+  <Hero
+    title="Code of Conduct"
+    subtitle="Everyone is welcome, and everyone is looked after."
+  />
+
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto space-y-10">
+        <div>
+          <h2 class="text-2xl font-bold text-text mb-4">Our commitment</h2>
+          <p class="text-text-light">
+            The Norfolk Power Platform User Group is committed to a respectful, friendly, and
+            professional environment for everyone, regardless of gender, gender identity, sexual
+            orientation, disability, physical appearance, age, race, or religion. This applies at
+            our in-person events, online sessions, and in our online spaces.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold text-text mb-4">We expect everyone to</h2>
+          <ul class="space-y-3 text-text-light list-disc pl-6">
+            <li>Be friendly and welcoming — especially to people attending for the first time.</li>
+            <li>Show courtesy and respect to speakers: phones on silent, save conversations for the break.</li>
+            <li>Respect differing opinions and experience levels — seek to understand rather than criticise.</li>
+            <li>Use inclusive language and make space for people who differ from you.</li>
+            <li>Assume good intent in others' questions and comments.</li>
+            <li>Keep talks and discussions free of sales pitches unless clearly agreed as sponsor content.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold text-text mb-4">Zero tolerance</h2>
+          <p class="text-text-light">
+            We have zero tolerance for harassment, discrimination, or any behaviour that degrades
+            others. Discriminatory or exclusionary jokes are not appropriate. Anyone violating this
+            code may be asked to leave an event at the organisers' sole discretion.
+          </p>
+        </div>
+
+        <div class="bg-background-alt rounded-xl p-6">
+          <h2 class="text-2xl font-bold text-text mb-4">Reporting a problem</h2>
+          <p class="text-text-light mb-4">
+            If something makes you uncomfortable at an event — however small it seems — please tell
+            an organiser on the night. We wear name badges and we will take it seriously, in
+            confidence, straight away.
+          </p>
+          <p class="text-text-light">
+            You can also reach us afterwards via
+            <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark font-medium">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+            or the <a href="/contact" class="text-primary hover:text-primary-dark font-medium">contact page</a>.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-bold text-text mb-4">Accessibility</h2>
+          <p class="text-text-light">
+            Our events are free and open to all. Each event page lists the venue details — if you
+            have an access or dietary requirement, let us know when you register or via the contact
+            page and we'll sort it before the night.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

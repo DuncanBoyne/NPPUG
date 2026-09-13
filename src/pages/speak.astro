@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout
+  title="Speak at NPPUG"
+  description="Give a talk at the Norfolk Power Platform User Group. First-time speakers get a short slot, a friendly room, and help preparing."
+>
+  <Hero
+    title="Speak at NPPUG"
+    subtitle="Share what you've built, what broke, and what you learned — to the friendliest room in Norfolk."
+    showCta={true}
+    ctaText="Submit a Talk on Sessionize"
+    ctaLink={SITE.sessionize}
+  />
+
+  <!-- Why speak -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-text mb-8 text-center">Why Speak Here?</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-xl shadow-lg border border-border p-6">
+            <h3 class="font-bold text-text mb-2">A real audience, low stakes</h3>
+            <p class="text-text-light">
+              20+ practitioners who want you to succeed. Evening meetup, two talks a night —
+              the perfect room to try new material or speak for the first time.
+            </p>
+          </div>
+          <div class="bg-white rounded-xl shadow-lg border border-border p-6">
+            <h3 class="font-bold text-text mb-2">We promote you properly</h3>
+            <p class="text-text-light">
+              Your session and bio go on our website and LinkedIn. We take photos while you present
+              and send them to you afterwards — content for your own profile.
+            </p>
+          </div>
+          <div class="bg-white rounded-xl shadow-lg border border-border p-6">
+            <h3 class="font-bold text-text mb-2">A step to bigger stages</h3>
+            <p class="text-text-light">
+              NPPUG speakers go on to the East of England Power Platform Summit and user groups
+              and conferences across the UK. This is where that starts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- First-time speakers -->
+  <section class="py-16 bg-background-alt">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg border-2 border-primary/30 p-8">
+          <h2 class="text-2xl font-bold text-text mb-4">Never spoken before? Perfect.</h2>
+          <p class="text-text-light mb-6">
+            Every speaker you've ever seen had a first talk. We'd love yours to be with us, so we make it easy:
+          </p>
+          <ul class="space-y-4 text-text-light">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span><strong class="text-text">Start with 10–15 minutes.</strong> A lightning talk about one thing you built or one problem you solved is a brilliant first session.</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span><strong class="text-text">We'll mentor you.</strong> An experienced NPPUG speaker will help you shape the talk, review your slides, and do a practice run if you want one.</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span><strong class="text-text">You don't need to be an expert.</strong> "Here's what I tried, here's what went wrong, here's what I'd do differently" is often the most useful talk of the night.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we need -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-text mb-8 text-center">What We Need From You</h2>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <div class="text-4xl font-bold text-primary mb-2">1</div>
+            <h3 class="font-bold text-text mb-1">A title</h3>
+            <p class="text-text-light">Clear beats clever. Say what the audience will get.</p>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-primary mb-2">2</div>
+            <h3 class="font-bold text-text mb-1">A short abstract</h3>
+            <p class="text-text-light">A few sentences on what you'll cover and who it's for.</p>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-primary mb-2">3</div>
+            <h3 class="font-bold text-text mb-1">A line about you</h3>
+            <p class="text-text-light">Your bio and a photo — we use these to promote your session.</p>
+          </div>
+        </div>
+        <p class="text-text-light text-center mt-8">
+          Topics we love: Power Apps, Power Automate, Power BI, Fabric, Copilot Studio, Dynamics 365,
+          Dataverse, real project stories, career journeys, and soft skills. No sales pitches — that's
+          our promise to the audience.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-4">Ready When You Are</h2>
+      <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+        Submit a talk idea — even a rough one — and we'll take it from there.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href={SITE.sessionize}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+        >
+          Submit on Sessionize<span class="sr-only"> (opens in new tab)</span>
+        </a>
+        <a
+          href="/contact"
+          class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+        >
+          Talk It Through First
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

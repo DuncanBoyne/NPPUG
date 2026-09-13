@@ -1,0 +1,55 @@
+---
+// Email capture. Renders a real signup form once NEWSLETTER_FORM_ACTION is
+// configured in src/config.ts; until then it falls back to LinkedIn + contact
+// so the section is never a dead end.
+import { SITE, NEWSLETTER_FORM_ACTION } from '../config';
+---
+
+<section class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5" aria-labelledby="newsletter-heading">
+  <div class="container mx-auto px-4">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 id="newsletter-heading" class="text-3xl font-bold text-text mb-4">Never Miss a Meetup</h2>
+      <p class="text-text-light text-lg mb-8">
+        Get each event in your inbox first, plus speaker announcements and photos from the night.
+        No spam — monthly at most.
+      </p>
+
+      {NEWSLETTER_FORM_ACTION ? (
+        <form action={NEWSLETTER_FORM_ACTION} method="post" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <label for="newsletter-email" class="sr-only">Email address</label>
+          <input
+            id="newsletter-email"
+            type="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            class="flex-grow px-4 py-3 rounded-lg border border-border focus:border-primary bg-white text-text"
+          />
+          <button
+            type="submit"
+            class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+          >
+            Subscribe
+          </button>
+        </form>
+      ) : (
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href={SITE.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+          >
+            Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span>
+          </a>
+          <a
+            href="/contact"
+            class="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors"
+          >
+            Ask to Join the Mailing List
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

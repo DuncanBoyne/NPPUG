@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import FirstMeetup from '../../components/FirstMeetup.astro';
 import { getCollection } from 'astro:content';
+import { SITE } from '../../config';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -22,21 +24,26 @@ const isPast = eventEnd < now;
 const allSpeakers = await getCollection('speakers');
 const eventSpeakers = allSpeakers.filter(s => event.data.speakers.includes(s.slug));
 
+// Times are stored without a timezone and parsed as UTC, so format in UTC
+// to display the wall-clock time as written (matches EventCard).
 const formattedDate = event.data.date.toLocaleDateString('en-GB', {
   weekday: 'long',
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'UTC',
 });
 
 const formattedTime = event.data.date.toLocaleTimeString('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
+  timeZone: 'UTC',
 });
 
 const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
+  timeZone: 'UTC',
 });
 ---
 
@@ -78,16 +85,24 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
           </div>
         </div>
 
-        {!isPast && event.data.registrationUrl && (
+        {!isPast && (
           <div class="mt-8">
-            <a
-              href={event.data.registrationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-            >
-              Register Now<span class="sr-only"> (opens in new tab)</span>
-            </a>
+            {event.data.registrationUrl ? (
+              <a
+                href={event.data.registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+              >
+                Register Free<span class="sr-only"> (opens in new tab)</span>
+              </a>
+            ) : (
+              <p class="text-white/90 text-lg">
+                <strong>Free to attend — no ticket needed.</strong> Just turn up on the night, and
+                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="underline font-semibold hover:text-white ml-1">follow us on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+                for any updates.
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -188,8 +203,73 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
     </div>
   </div>
 
+  <!-- First-timer promise (upcoming events only) -->
+  {!isPast && <FirstMeetup />}
+
+  <!-- Bottom conversion CTA -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4 text-center">
+      {!isPast ? (
+        <>
+          <h2 class="text-3xl font-bold mb-4">See You There?</h2>
+          <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            It's free, it's friendly, and there's pizza. Bring a colleague.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            {event.data.registrationUrl ? (
+              <a
+                href={event.data.registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+              >
+                Register Free<span class="sr-only"> (opens in new tab)</span>
+              </a>
+            ) : (
+              <a
+                href={SITE.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+              >
+                Follow for Updates<span class="sr-only"> (opens in new tab)</span>
+              </a>
+            )}
+            <a
+              href="/speak"
+              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Speak at a Future Meetup
+            </a>
+          </div>
+        </>
+      ) : (
+        <>
+          <h2 class="text-3xl font-bold mb-4">Don't Miss the Next One</h2>
+          <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            We meet every month in Norwich — free talks, demos, and networking.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/events"
+              class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+            >
+              See Upcoming Events
+            </a>
+            <a
+              href="/speak"
+              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+            >
+              Speak at a Future Meetup
+            </a>
+          </div>
+        </>
+      )}
+    </div>
+  </section>
+
   <!-- Back Link -->
-  <div class="container mx-auto px-4 pb-12">
+  <div class="container mx-auto px-4 py-8">
     <a href="/events" class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors">
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />

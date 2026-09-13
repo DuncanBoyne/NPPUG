@@ -1,0 +1,72 @@
+---
+// "Your first meetup — what to expect" promise block.
+// Used on the homepage and on every upcoming event page so newcomers always
+// know exactly what they are walking into.
+const steps = [
+  { time: '6:15pm', text: 'Doors open — grab pizza and a drink, say hello (or don’t, that’s fine too)' },
+  { time: '6:30pm', text: 'A short welcome from the organisers' },
+  { time: '6:45pm', text: 'Two talks with real demos, and a break in between' },
+  { time: '8:45pm', text: 'Done — stay for networking or head straight home' },
+];
+---
+
+<section class="py-16 bg-white" aria-labelledby="first-meetup-heading">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 id="first-meetup-heading" class="text-3xl md:text-4xl font-bold text-text mb-4">
+          Your First Meetup — What to Expect
+        </h2>
+        <p class="text-text-light text-lg max-w-2xl mx-auto">
+          Coming somewhere new on your own is the hardest part. Here's exactly how the evening goes,
+          so there are no surprises.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-start">
+        <ol class="space-y-4">
+          {steps.map((step) => (
+            <li class="flex items-start bg-background-alt rounded-lg p-4">
+              <span class="font-bold text-primary w-20 flex-shrink-0">{step.time}</span>
+              <span class="text-text-light">{step.text}</span>
+            </li>
+          ))}
+        </ol>
+
+        <div class="bg-primary/5 border border-primary/20 rounded-xl p-6">
+          <h3 class="font-bold text-text mb-3">Our promise to first-timers</h3>
+          <ul class="space-y-3 text-text-light">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Come alone — you won't stay alone. An organiser will say hello and introduce you around.</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>No experience needed, nothing to prepare, and nobody will make you speak.</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>No sales pitches — talks are real demos and real experience from real practitioners.</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span>It's completely free — the pizza too — thanks to our sponsors.</span>
+            </li>
+          </ul>
+          <p class="text-sm text-text-light mt-4">
+            We run our events under a <a href="/code-of-conduct" class="text-primary hover:text-primary-dark font-medium">Code of Conduct</a> —
+            everyone is welcome, and everyone is looked after.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

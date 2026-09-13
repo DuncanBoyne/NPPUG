@@ -10,7 +10,14 @@ const navLinks = [
     ]
   },
   { href: '/events', label: 'Events' },
-  { href: '/speakers', label: 'Speakers' },
+  {
+    label: 'Speakers',
+    href: '/speakers',
+    children: [
+      { href: '/speakers', label: 'Our Speakers' },
+      { href: '/speak', label: 'Become a Speaker' },
+    ]
+  },
   {
     label: 'Resources',
     href: '/resources',
@@ -37,6 +44,7 @@ const allLinks = [
   { href: '/team', label: 'Our Team' },
   { href: '/events', label: 'Events' },
   { href: '/speakers', label: 'Speakers' },
+  { href: '/speak', label: 'Become a Speaker' },
   { href: '/resources', label: 'All Resources' },
   { href: '/blog', label: 'Blog' },
   { href: '/knowledge-base', label: 'Knowledge Base' },

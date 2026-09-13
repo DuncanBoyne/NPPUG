@@ -1,0 +1,68 @@
+---
+// One CTA per audience: speak / sponsor / volunteer.
+import { SITE } from '../config';
+---
+
+<section class="py-16 bg-background-alt" aria-labelledby="get-involved-heading">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 id="get-involved-heading" class="text-3xl md:text-4xl font-bold text-text mb-4">Get Involved</h2>
+      <p class="text-text-light text-lg max-w-2xl mx-auto">
+        The community is built by the people in it. There's a place for you here beyond the audience.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <!-- Speak -->
+      <div class="bg-white rounded-xl shadow-lg border border-border p-8 flex flex-col">
+        <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-text mb-2">Speak</h3>
+        <p class="text-text-light mb-6 flex-grow">
+          Give your first (or fiftieth) talk. First-timers get a short slot, a friendly room,
+          and help preparing — we'll make you look good.
+        </p>
+        <a href="/speak" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors text-center">
+          Become a Speaker
+        </a>
+      </div>
+
+      <!-- Sponsor -->
+      <div class="bg-white rounded-xl shadow-lg border border-border p-8 flex flex-col">
+        <div class="w-14 h-14 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-7 h-7 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-text mb-2">Sponsor</h3>
+        <p class="text-text-light mb-6 flex-grow">
+          Put your brand in front of Norfolk's Microsoft professionals — and keep every
+          event free while you're at it. Packages from £200 per event.
+        </p>
+        <a href="/sponsorship" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors text-center">
+          Sponsorship Options
+        </a>
+      </div>
+
+      <!-- Volunteer -->
+      <div class="bg-white rounded-xl shadow-lg border border-border p-8 flex flex-col">
+        <div class="w-14 h-14 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-text mb-2">Volunteer</h3>
+        <p class="text-text-light mb-6 flex-grow">
+          Help us run it — welcoming newcomers, photos, socials, venue logistics.
+          A couple of hours a month makes a real difference.
+        </p>
+        <a href="/contact" class="inline-block bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity text-center">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
