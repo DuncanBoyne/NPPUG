@@ -105,3 +105,148 @@ body {
   color: var(--color-text);
   background-color: var(--color-background);
 }
+
+/* ---------------------------------------------------------------
+   Markdown content styling
+   Applies to .prose blocks: event pages, blog posts, speaker bios,
+   team page. Colours are left to inherit so utility classes such as
+   text-text-light still win.
+   --------------------------------------------------------------- */
+.prose {
+  line-height: 1.75;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 0.25rem;
+}
+
+.prose li::marker {
+  color: var(--color-primary);
+}
+
+.prose a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  color: var(--color-primary-dark);
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1.25rem;
+  font-style: italic;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.prose-lg {
+  font-size: 1.075rem;
+}
+
+.prose-sm {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+/* Prominent call-to-action button, usable inside markdown content */
+.cta-button,
+.prose a.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.cta-button:hover,
+.prose a.cta-button:hover {
+  background-color: var(--color-primary-dark);
+  color: #FFFFFF;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  transform: translateY(-1px);
+}
+
+.cta-button:active,
+.prose a.cta-button:active {
+  transform: translateY(0);
+}
