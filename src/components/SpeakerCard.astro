@@ -15,78 +15,47 @@ const { name, title, company, bio, slug, image, linkedin, twitter } = Astro.prop
 const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
 ---
 
-<article class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-border">
-  <div class="p-6">
-    <div class="flex items-start space-x-4">
-      <!-- Avatar -->
-      <div class="flex-shrink-0">
-        {image ? (
-          <img
-            src={image}
-            alt={name}
-            class="w-20 h-20 rounded-full object-cover"
-          />
-        ) : (
-          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl font-bold">
-            {initials}
-          </div>
-        )}
+<article class="card p-6 md:p-7 flex flex-col gap-4 transition-shadow hover:shadow-[0_24px_48px_-28px_rgba(30,27,46,0.35)]">
+  <div class="flex items-start gap-4">
+    {image ? (
+      <img src={image} alt={name} class="w-16 h-16 rounded-full object-cover shrink-0" />
+    ) : (
+      <div class="w-16 h-16 rounded-full bg-primary-tint text-primary-deep flex items-center justify-center font-display font-bold text-xl shrink-0" aria-hidden="true">
+        {initials}
       </div>
-
-      <div class="flex-grow">
-        <h3 class="text-xl font-bold text-text">
-          <a href={`/speakers/${slug}`} class="hover:text-primary transition-colors">
-            {name}
-          </a>
-        </h3>
-        <p class="text-primary font-medium">{title}</p>
-        {company && <p class="text-text-light text-sm">{company}</p>}
-      </div>
+    )}
+    <div class="flex flex-col gap-0.5 min-w-0">
+      <h3 class="font-display font-bold text-xl tracking-tight text-text">
+        <a href={`/speakers/${slug}`} class="hover:text-primary transition-colors">{name}</a>
+      </h3>
+      <p class="text-sm font-semibold text-primary">{title}</p>
+      {company && <p class="text-sm text-text-light">{company}</p>}
     </div>
+  </div>
 
-    <p class="text-text-light mt-4 line-clamp-3">
-      {bio}
-    </p>
+  <p class="text-[15px] leading-relaxed text-text-light line-clamp-3">{bio}</p>
 
-    <div class="mt-4 flex items-center justify-between">
-      <a
-        href={`/speakers/${slug}`}
-        class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors"
-      >
-        View Profile<span class="sr-only">: {name}</span>
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
+  <div class="mt-auto pt-1 flex items-center justify-between">
+    <a href={`/speakers/${slug}`} class="link-arrow">
+      View profile<span class="sr-only">: {name}</span>
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </a>
 
-      <div class="flex space-x-2">
-        {linkedin && (
-          <a
-            href={linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-text-light hover:text-primary transition-colors"
-            aria-label={`${name}'s LinkedIn (opens in new tab)`}
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-          </a>
-        )}
-        {twitter && (
-          <a
-            href={twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-text-light hover:text-primary transition-colors"
-            aria-label={`${name}'s Twitter (opens in new tab)`}
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-          </a>
-        )}
-      </div>
+    <div class="flex gap-3">
+      {linkedin && (
+        <a href={linkedin} target="_blank" rel="noopener noreferrer" class="text-text-faint hover:text-primary transition-colors" aria-label={`${name}'s LinkedIn (opens in new tab)`}>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9.5h4V21H3zM9.5 9.5H13.3v1.6h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.2c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4z" />
+          </svg>
+        </a>
+      )}
+      {twitter && (
+        <a href={twitter} target="_blank" rel="noopener noreferrer" class="text-text-faint hover:text-primary transition-colors" aria-label={`${name}'s X profile (opens in new tab)`}>
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </a>
+      )}
     </div>
   </div>
 </article>

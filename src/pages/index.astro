@@ -5,11 +5,10 @@ import FirstMeetup from '../components/FirstMeetup.astro';
 import GetInvolved from '../components/GetInvolved.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import { getCollection } from 'astro:content';
-import { SITE, STATS, COMMUNITY_PHOTOS } from '../config';
+import { SITE, STATS } from '../config';
 
 const allEvents = await getCollection('events');
 
-// Calculate if event is past based on the event date
 const now = new Date();
 const isEventPast = (event: typeof allEvents[0]) => {
   const eventEnd = event.data.endDate || event.data.date;
@@ -21,226 +20,232 @@ const upcomingEvents = allEvents
   .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 
 const nextEvent = upcomingEvents[0];
-const moreEvents = upcomingEvents.slice(1, 3);
-
-const allPosts = await getCollection('blog');
-const recentPosts = allPosts
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+const comingUp = upcomingEvents.slice(0, 3);
 
 const allSpeakers = await getCollection('speakers');
 const speakerMap = Object.fromEntries(allSpeakers.map(s => [s.slug, s.data]));
 
-const nextEventSpeakers = nextEvent
-  ? nextEvent.data.speakers.map(slug => speakerMap[slug]).filter(Boolean)
+// Talks on the ticket: explicit sessions first, else linked speaker profiles.
+type Talk = { title: string; speaker: string; image?: string };
+const talks: Talk[] = nextEvent
+  ? nextEvent.data.sessions.length > 0
+    ? nextEvent.data.sessions
+    : nextEvent.data.speakers
+        .map(slug => speakerMap[slug])
+        .filter(Boolean)
+        .map(s => ({ title: s.title, speaker: s.name, image: s.image }))
   : [];
 
-const nextEventDate = nextEvent?.data.date.toLocaleDateString('en-GB', {
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-  timeZone: 'UTC',
-});
-const nextEventStart = nextEvent?.data.date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
-const nextEventEnd = nextEvent?.data.endDate?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
-const nextEventCtaUrl = nextEvent
-  ? (nextEvent.data.registrationUrl ?? `/events/${nextEvent.slug}`)
-  : '/events';
+const initials = (name: string) => name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+const nextDay = nextEvent?.data.date.getUTCDate();
+const nextMonth = nextEvent?.data.date.toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' }).slice(0, 3).toUpperCase();
+const nextWeekday = nextEvent?.data.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+const nextStart = nextEvent?.data.date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+const nextEnd = nextEvent?.data.endDate?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+const nextIsOnline = nextEvent ? /online|virtual/i.test(`${nextEvent.data.venue} ${nextEvent.data.location}`) : false;
+const nextPlace = nextEvent ? (nextIsOnline ? 'Online, on Teams' : `${nextEvent.data.venue}, ${nextEvent.data.location}`) : '';
+const nextCtaUrl = nextEvent ? (nextEvent.data.registrationUrl ?? `/events/${nextEvent.slug}`) : '/events';
+const nextCtaLabel = nextEvent?.data.registrationUrl?.includes('meetup.com') ? 'Register on Meetup' : 'Register free';
 
 // Outcome-framed topic tiles: product + what attending helps you do.
-// Class names are written out in full so Tailwind's scanner picks them up.
 const topics = [
-  { name: 'Power Apps', outcome: 'Build apps without waiting for IT', bg: 'bg-power-apps/10', text: 'text-power-apps', icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' },
-  { name: 'Power Automate', outcome: 'Give hours back to your team', bg: 'bg-power-automate/10', text: 'text-power-automate', icon: 'M13 3v6h8l-8 12v-6H5l8-12z' },
-  { name: 'Power BI', outcome: "Answer questions your reports can't", bg: 'bg-power-bi/10', text: 'text-power-bi', icon: 'M4 5h4v14H4zM10 9h4v10h-4zM16 3h4v16h-4z' },
-  { name: 'Power Pages', outcome: 'Put your data on the web, securely', bg: 'bg-power-pages/10', text: 'text-power-pages', icon: 'M4 4h16v16H4V4zm2 2v12h12V6H6z' },
-  { name: 'Copilot Studio', outcome: 'Build agents that actually help', bg: 'bg-copilot-studio/10', text: 'text-copilot-studio', icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-13h2v6h-2zm0 8h2v2h-2z' },
-  { name: 'Dynamics 365', outcome: 'CRM & ERP that fit your business', bg: 'bg-secondary/10', text: 'text-secondary', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z' },
-  { name: 'Dataverse', outcome: 'One secure home for your data', bg: 'bg-primary/10', text: 'text-primary', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z' },
-  { name: 'Soft Skills', outcome: 'Present, persuade, and lead', bg: 'bg-accent/10', text: 'text-accent', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z' },
-  { name: 'Careers', outcome: 'Meet local employers and peers', bg: 'bg-secondary/10', text: 'text-secondary', icon: 'M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z' },
-  { name: 'And More', outcome: 'AI, Fabric, Azure & beyond', bg: 'bg-primary/10', text: 'text-primary', icon: 'M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z' },
+  { name: 'Power Apps', outcome: 'Build apps without waiting for IT', color: 'bg-power-apps' },
+  { name: 'Power Automate', outcome: 'Give hours back to your team', color: 'bg-power-automate' },
+  { name: 'Power BI', outcome: "Answer questions your reports can't", color: 'bg-power-bi' },
+  { name: 'Power Pages', outcome: 'Put your data on the web, securely', color: 'bg-power-pages' },
+  { name: 'Copilot Studio', outcome: 'Build agents that actually help', color: 'bg-copilot-studio' },
+  { name: 'Dynamics 365', outcome: 'CRM and ERP that fit your business', color: 'bg-secondary' },
+  { name: 'Dataverse', outcome: 'One secure home for your data', color: 'bg-primary' },
+  { name: 'Soft skills', outcome: 'Present, persuade and lead', color: 'bg-accent' },
+  { name: 'Careers', outcome: 'Meet local employers and peers', color: 'bg-secondary-dark' },
+  { name: 'And more', outcome: 'AI, Fabric, Azure and beyond', color: 'bg-ink' },
 ];
 ---
 
 <BaseLayout title="Home" description={SITE.tagline}>
-  <!-- ============ 1. Hero: identity + next event ============ -->
-  <section class="bg-gradient-to-br from-primary via-primary-dark to-secondary text-white py-16 md:py-24">
-    <div class="container mx-auto px-4">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <!-- Identity -->
-        <div class="text-center lg:text-left">
-          <p class="uppercase tracking-widest text-white/80 font-semibold mb-4">Norfolk's Microsoft community</p>
-          <h1 class="text-4xl md:text-5xl xl:text-6xl font-bold mb-6 leading-tight">
-            Free monthly meetups in Norwich for people who build with Microsoft
-          </h1>
-          <p class="text-xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0">
-            Power Platform, Power BI, Fabric, Dynamics 365, and Copilot — real speakers, real demos,
-            free pizza, no sales pitches. From your first flow to enterprise architecture.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-            <a
-              href={nextEventCtaUrl}
-              class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
-            >
-              {nextEvent ? 'Join the Next Meetup — Free' : 'See Our Events'}
-            </a>
-            <a
-              href="#first-meetup-heading"
-              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-            >
-              First Time? What to Expect
-            </a>
-          </div>
+  <!-- ============ 1. Hero: identity + next meetup ticket ============ -->
+  <section class="wrap pt-10 pb-14 md:pt-14 md:pb-[72px] grid gap-10 lg:grid-cols-12 lg:gap-8 lg:items-center">
+    <div class="lg:col-span-7 flex flex-col gap-6 md:gap-7">
+      <span class="kicker">Norfolk's Microsoft community</span>
+      <h1 class="h-display text-text">Free monthly meetups in Norwich for people who build with Microsoft.</h1>
+      <p class="lede max-w-[560px]">
+        Power Platform, Power BI, Fabric, Dynamics 365 and Copilot. Real speakers, real demos, free pizza, no sales pitches. From your first flow to enterprise architecture.
+      </p>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <a href={nextCtaUrl} class="btn btn-primary btn-lg" target={nextEvent?.data.registrationUrl ? '_blank' : undefined} rel={nextEvent?.data.registrationUrl ? 'noopener noreferrer' : undefined}>
+          {nextEvent ? 'Join the next meetup, free' : 'See our events'}
+          <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+        <a href="#first-meetup-heading" class="btn btn-ghost btn-lg">First time? What to expect</a>
+      </div>
+      <div class="flex items-center gap-3 pt-1">
+        <div class="flex" aria-hidden="true">
+          <span class="w-8 h-8 rounded-full bg-power-apps border-2 border-background"></span>
+          <span class="w-8 h-8 rounded-full bg-power-automate border-2 border-background -ml-2.5"></span>
+          <span class="w-8 h-8 rounded-full bg-power-bi border-2 border-background -ml-2.5"></span>
+          <span class="w-8 h-8 rounded-full bg-power-pages border-2 border-background -ml-2.5"></span>
         </div>
-
-        <!-- Next event card (fallback shown while nothing is scheduled) -->
-        {!nextEvent && (
-          <div class="bg-white text-text rounded-2xl shadow-2xl overflow-hidden">
-            <div class="bg-secondary text-white px-6 py-2 font-semibold text-sm uppercase tracking-wide">
-              Next Meetup
-            </div>
-            <div class="p-6 md:p-8">
-              <h2 class="text-2xl font-bold mb-4">Next date announced soon</h2>
-              <p class="text-text-light mb-6">
-                We meet every month in Norwich. The next event goes up here first —
-                follow us on LinkedIn or check the events page so you don't miss it.
-              </p>
-              <div class="flex flex-col sm:flex-row gap-3">
-                <a
-                  href={SITE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex-1 text-center bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
-                >
-                  Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span>
-                </a>
-                <a
-                  href="/events"
-                  class="flex-1 text-center border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition-colors"
-                >
-                  Past & Future Events
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-        {nextEvent && (
-          <div class="bg-white text-text rounded-2xl shadow-2xl overflow-hidden">
-            <div class="bg-secondary text-white px-6 py-2 font-semibold text-sm uppercase tracking-wide">
-              Next Meetup
-            </div>
-            <div class="p-6 md:p-8">
-              <h2 class="text-2xl font-bold mb-4">
-                <a href={`/events/${nextEvent.slug}`} class="hover:text-primary transition-colors">
-                  {nextEvent.data.title}
-                </a>
-              </h2>
-              <div class="space-y-2 text-text-light mb-5">
-                <div class="flex items-center">
-                  <svg class="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span>{nextEventDate}, {nextEventStart}{nextEventEnd && ` – ${nextEventEnd}`}</span>
-                </div>
-                <div class="flex items-center">
-                  <svg class="w-5 h-5 mr-2 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>{nextEvent.data.venue}</span>
-                </div>
-              </div>
-
-              {nextEventSpeakers.length > 0 ? (
-                <div class="mb-6">
-                  <div class="text-sm font-semibold text-text mb-3">Speakers</div>
-                  <div class="space-y-3">
-                    {nextEventSpeakers.map((speaker) => (
-                      <div class="flex items-center">
-                        {speaker.image ? (
-                          <img src={speaker.image} alt="" class="w-10 h-10 rounded-full object-cover mr-3" />
-                        ) : (
-                          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold mr-3 text-sm" aria-hidden="true">
-                            {speaker.name.split(' ').map((n: string) => n[0]).join('')}
-                          </div>
-                        )}
-                        <div>
-                          <div class="font-semibold text-text text-sm">{speaker.name}</div>
-                          <div class="text-xs text-text-light">{speaker.title}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <p class="text-text-light text-sm mb-6">{nextEvent.data.description}</p>
-              )}
-
-              <div class="flex flex-col sm:flex-row gap-3">
-                <a
-                  href={nextEventCtaUrl}
-                  class="flex-1 text-center bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
-                >
-                  Register Free
-                </a>
-                <a
-                  href={`/events/${nextEvent.slug}`}
-                  class="flex-1 text-center border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary hover:text-white transition-colors"
-                >
-                  Event Details
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
+        <span class="text-[15px] text-text-light">Makers, analysts, admins and architects from across Norfolk</span>
       </div>
     </div>
+
+    <!-- Next meetup ticket -->
+    <aside class="lg:col-span-5 card rounded-3xl overflow-hidden shadow-[0_24px_48px_-24px_rgba(30,27,46,0.25)] flex flex-col" aria-labelledby="next-meetup-heading">
+      <div class="flex items-center justify-between px-6 md:px-7 pt-5 md:pt-6 pb-4">
+        <span class="kicker">Next meetup</span>
+        <span class="pill pill-free">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+          Free
+        </span>
+      </div>
+
+      {nextEvent ? (
+        <>
+          <div class="flex items-start gap-5 px-6 md:px-7 pb-6">
+            <div class="w-[84px] h-[92px] rounded-2xl bg-primary-tint flex flex-col items-center justify-center shrink-0" aria-hidden="true">
+              <span class="font-display font-extrabold text-[40px] leading-none text-primary-deep">{nextDay}</span>
+              <span class="text-[13px] font-bold tracking-[0.1em] text-primary mt-1">{nextMonth}</span>
+            </div>
+            <div class="flex flex-col gap-2 min-w-0">
+              <h2 id="next-meetup-heading" class="h-card text-[26px] text-text">
+                <a href={`/events/${nextEvent.slug}`} class="hover:text-primary transition-colors">{nextEvent.data.title.replace(/\s\d{4}\s/, ' ')}</a>
+              </h2>
+              <div class="flex items-center gap-2 text-[15px] text-text-light">
+                <svg class="w-[18px] h-[18px] text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                <span>{nextWeekday}, {nextStart}{nextEnd && ` to ${nextEnd}`}</span>
+              </div>
+              <div class="flex items-center gap-2 text-[15px] text-text-light">
+                {nextIsOnline ? (
+                  <svg class="w-[18px] h-[18px] text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="13" rx="2" /><path d="M8 21h8" /></svg>
+                ) : (
+                  <svg class="w-[18px] h-[18px] text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z" /><circle cx="12" cy="11" r="2.5" /></svg>
+                )}
+                <span>{nextPlace}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- perforation -->
+          <div class="relative mx-5 border-t-2 border-dashed border-border" aria-hidden="true">
+            <span class="absolute -left-8 -top-3 w-6 h-6 rounded-full bg-background border border-border"></span>
+            <span class="absolute -right-8 -top-3 w-6 h-6 rounded-full bg-background border border-border"></span>
+          </div>
+
+          <div class="flex flex-col gap-4 px-6 md:px-7 pt-6 pb-6 md:pb-7">
+            {talks.length > 0 ? (
+              <>
+                <span class="text-[13px] font-bold tracking-[0.1em] uppercase text-text-light">{talks.length === 1 ? 'The talk' : `${talks.length === 2 ? 'Two' : talks.length} talks`}</span>
+                <ul class="flex flex-col gap-4">
+                  {talks.map((talk, i) => (
+                    <li class="flex items-center gap-3.5">
+                      <div class:list={['w-14 h-14 rounded-full overflow-hidden shrink-0 flex items-end justify-center', i % 2 === 0 ? 'bg-primary-tint' : 'bg-secondary-tint']} aria-hidden="true">
+                        {talk.image ? (
+                          <img src={talk.image} alt="" class="w-12 h-[60px] object-cover object-top" />
+                        ) : (
+                          <span class="w-14 h-14 flex items-center justify-center font-display font-bold text-primary-deep">{initials(talk.speaker)}</span>
+                        )}
+                      </div>
+                      <div class="flex flex-col gap-0.5">
+                        <span class="font-bold text-text">{talk.title}</span>
+                        <span class="text-sm text-text-light">{talk.speaker}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p class="text-[15px] text-text-light">{nextEvent.data.description}</p>
+            )}
+            <div class="flex gap-2.5 pt-1">
+              <a href={nextCtaUrl} class="btn btn-primary flex-1 whitespace-nowrap px-4 text-[15px]" target={nextEvent.data.registrationUrl ? '_blank' : undefined} rel={nextEvent.data.registrationUrl ? 'noopener noreferrer' : undefined}>
+                {nextCtaLabel}{nextEvent.data.registrationUrl && <span class="sr-only"> (opens in new tab)</span>}
+              </a>
+              <a href={`/events/${nextEvent.slug}`} class="btn btn-ghost flex-1 whitespace-nowrap px-4 text-[15px]">Event details</a>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div class="px-6 md:px-7 pb-7 flex flex-col gap-4">
+          <h2 id="next-meetup-heading" class="h-card text-text">Next date announced soon</h2>
+          <p class="text-[15px] text-text-light">We meet every month in Norwich. The next event goes up here first. Follow us on LinkedIn or check the events page so you don't miss it.</p>
+          <div class="flex gap-2.5">
+            <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary flex-1">Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+            <a href="/events" class="btn btn-ghost flex-1">All events</a>
+          </div>
+        </div>
+      )}
+    </aside>
   </section>
 
-  <!-- ============ 2. Proof bar ============ -->
-  <section class="bg-white border-b border-border" aria-label="Community facts">
-    <div class="container mx-auto px-4 py-8">
-      <dl class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        {STATS.map((stat) => (
-          <div>
-            <dt class="sr-only">{stat.label}</dt>
-            <dd>
-              <span class="block text-3xl font-bold text-primary">{stat.value}</span>
-              <span class="block text-sm text-text-light mt-1">{stat.label}</span>
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </div>
+  <!-- ============ 2. Proof strip ============ -->
+  <section class="wrap" aria-label="Community facts">
+    <dl class="border-y border-border grid grid-cols-2 md:grid-cols-4">
+      {STATS.map((stat, i) => (
+        <div class:list={[
+          'py-5 md:py-7 flex flex-col gap-1',
+          i % 2 === 0 ? 'pr-4 md:pr-6' : 'pl-4 md:pl-6',
+          'md:px-6 md:first:pl-0 md:last:pr-0',
+          i < 2 && 'border-b border-border md:border-b-0',
+          (i % 2 === 0) && 'border-r border-border',
+          i === 2 && 'md:border-r',
+          i === 1 && 'md:border-r',
+        ]}>
+          <dt class="order-2 text-[15px] text-text-light">{stat.label}</dt>
+          <dd class="order-1 font-display font-extrabold text-[26px] md:text-[32px] tracking-tight text-text">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
 
   <!-- ============ 3. First meetup promise ============ -->
   <FirstMeetup />
 
-  <!-- ============ 4. Community photos (shown once photos are added) ============ -->
-  {COMMUNITY_PHOTOS.length > 0 && (
-    <section class="py-16 bg-background-alt" aria-labelledby="photos-heading">
-      <div class="container mx-auto px-4">
-        <h2 id="photos-heading" class="text-3xl font-bold text-text mb-8 text-center">The Community in Action</h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {COMMUNITY_PHOTOS.map((photo) => (
-            <img src={photo.src} alt={photo.alt} class="rounded-xl object-cover w-full h-40 shadow" loading="lazy" />
-          ))}
+  <!-- ============ 4. What you'll get out of it ============ -->
+  <section class="section section-white" aria-labelledby="topics-heading">
+    <div class="wrap flex flex-col gap-10">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div class="max-w-2xl flex flex-col gap-4">
+          <span class="kicker">What you will get out of it</span>
+          <h2 id="topics-heading" class="h-section text-text">Every session is about doing something better at work.</h2>
         </div>
+        <a href="/events#past" class="link-arrow shrink-0">
+          See past sessions
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
       </div>
-    </section>
-  )}
+      <ul class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        {topics.map((topic) => (
+          <li class="card-muted p-4 md:p-[22px] flex flex-col gap-3.5">
+            <span class:list={['w-3.5 h-3.5 rounded', topic.color]} aria-hidden="true"></span>
+            <div class="flex flex-col gap-1">
+              <span class="font-bold text-[15px] md:text-base text-text">{topic.name}</span>
+              <span class="text-[13px] md:text-sm leading-snug text-text-light">{topic.outcome}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
-  <!-- ============ 5. More upcoming events ============ -->
-  {moreEvents.length > 0 && (
-    <section class="py-16 bg-background-alt">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">Coming Up After That</h2>
+  <!-- ============ 5. Coming up ============ -->
+  {comingUp.length > 0 && (
+    <section class="section" aria-labelledby="coming-up-heading">
+      <div class="wrap flex flex-col gap-9">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div class="flex flex-col gap-4">
+            <span class="kicker">Coming up</span>
+            <h2 id="coming-up-heading" class="h-section text-text">{comingUp.length === 1 ? 'Put it in your diary.' : `Put the next ${comingUp.length === 2 ? 'two' : 'three'} in your diary.`}</h2>
+          </div>
+          <a href="/events" class="link-arrow shrink-0">
+            All events
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
         </div>
-        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
-          {moreEvents.map((event) => (
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {comingUp.map((event) => (
             <EventCard
               title={event.data.title}
               date={event.data.date}
@@ -250,137 +255,51 @@ const topics = [
               description={event.data.description}
               slug={event.slug}
               isPast={false}
-              speakers={event.data.speakers.map(s => speakerMap[s]?.name || s)}
+              speakers={event.data.sessions.length > 0 ? event.data.sessions.map(s => s.speaker) : event.data.speakers.map(s => speakerMap[s]?.name || s)}
             />
           ))}
         </div>
-        <div class="text-center">
-          <a href="/events" class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
-            View All Events
-          </a>
-        </div>
       </div>
     </section>
   )}
 
-  <!-- ============ 6. What we cover → what you'll get ============ -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">What You'll Get Out of It</h2>
-        <p class="text-text-light text-lg max-w-2xl mx-auto">
-          Every session is about doing something better at work — across the full Microsoft ecosystem.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-        {topics.map((topic) => (
-          <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-border text-center">
-            <div class:list={['w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full flex items-center justify-center', topic.bg]}>
-              <svg class:list={['w-6 h-6 md:w-8 md:h-8', topic.text]} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d={topic.icon} />
-              </svg>
-            </div>
-            <h3 class="font-bold text-text mb-1 text-sm md:text-base">{topic.name}</h3>
-            <p class="text-xs md:text-sm text-text-light">{topic.outcome}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 7. Get involved: speak / sponsor / volunteer ============ -->
+  <!-- ============ 6. Get involved: speak / sponsor / volunteer ============ -->
   <GetInvolved />
 
-  <!-- ============ 8. Sponsors ============ -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-text mb-4">Our Sponsors Keep Every Event Free</h2>
-        <p class="text-text-light text-lg mb-10">
-          Free venue, free pizza, free learning — that only happens because of the organisations below.
-          Please thank them when you see them.
-        </p>
-        <div class="flex flex-wrap justify-center items-center gap-10 mb-10">
-          <a href="https://gtptech.co.uk/" target="_blank" rel="noopener noreferrer" class="block">
-            <img src="/images/sponsors/GTPTech.png" alt="GTP Tech Recruitment — Official Recruitment Partner" class="h-16 object-contain" />
-            <span class="block text-sm text-text-light mt-2">Official Recruitment Partner<span class="sr-only"> (opens in new tab)</span></span>
-          </a>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/sponsors" class="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
-            Meet Our Sponsors
-          </a>
-          <a href="/sponsorship" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors">
-            Become a Sponsor
-          </a>
-        </div>
+  <!-- ============ 7. Sponsors + built in Norfolk ============ -->
+  <section class="wrap section grid gap-6 lg:grid-cols-2 lg:gap-8" aria-label="Sponsors and about">
+    <div class="card rounded-3xl p-7 md:p-10 flex flex-col gap-5">
+      <span class="kicker">Sponsors</span>
+      <h2 class="font-display font-extrabold tracking-tight text-[28px] md:text-[32px] leading-[1.1] text-text">Our sponsors keep every event free.</h2>
+      <p class="text-text-light">Please thank them when you see them.</p>
+      <a href="https://gtptech.co.uk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-5 border border-dashed border-border-strong rounded-2xl hover:border-primary transition-colors">
+        <img src="/images/sponsors/GTPTech.png" alt="GTP Tech Recruitment" class="h-11 w-auto max-w-[140px] object-contain" />
+        <span class="flex flex-col gap-0.5">
+          <span class="font-bold text-text">GTP Tech Recruitment</span>
+          <span class="text-sm text-text-light">Official recruitment partner<span class="sr-only"> (opens in new tab)</span></span>
+        </span>
+      </a>
+      <div class="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-1">
+        <a href="/sponsorship" class="link-arrow">
+          Become a sponsor
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+        <a href="/sponsors" class="link-arrow text-text-light hover:text-text">Meet our sponsors</a>
+      </div>
+    </div>
+
+    <div class="card-tint p-7 md:p-10 flex flex-col gap-5 relative overflow-hidden">
+      <img src="/images/Logo.png" alt="" class="absolute -right-10 -bottom-8 w-[260px] opacity-[0.18] -rotate-12 pointer-events-none" aria-hidden="true" />
+      <span class="kicker">Built in Norfolk, for Norfolk</span>
+      <h2 class="font-display font-extrabold tracking-tight text-[28px] md:text-[32px] leading-[1.1] text-text max-w-[420px]">We are also the team behind the East of England Power Platform Summit.</h2>
+      <p class="text-text-light max-w-[420px]">Founded in {SITE.founded} by volunteers. From a chance meeting, to a user group, to a flagship two-day summit.</p>
+      <div class="mt-auto flex flex-wrap gap-3 pt-1 relative">
+        <a href="/about" class="btn btn-primary btn-sm">Our story</a>
+        <a href={SITE.eoepps} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm border-primary-soft">EoEPPS summit<span class="sr-only"> (opens in new tab)</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ============ 9. About / EoEPPS credibility ============ -->
-  <section class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-text mb-6">Built in Norfolk, for Norfolk</h2>
-        <p class="text-lg text-text-light mb-6">
-          Founded in {SITE.founded}, NPPUG brings together everyone in Norwich and Norfolk who works with
-          the Microsoft ecosystem — from beginners building their first flow to enterprise architects.
-          We're volunteers, and we're also the team behind the
-          <a href={SITE.eoepps} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark font-semibold">East of England Power Platform Summit<span class="sr-only"> (opens in new tab)</span></a>
-          — the region's community-led Power Platform conference.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/about" class="inline-block bg-secondary text-white px-6 py-3 rounded-lg font-semibold hover:bg-secondary-dark transition-colors">
-            Our Story
-          </a>
-          <a href="/team" class="inline-block border-2 border-secondary text-secondary-dark px-6 py-3 rounded-lg font-semibold hover:bg-secondary hover:text-white transition-colors">
-            Meet the Team
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 10. Latest updates ============ -->
-  {recentPosts.length > 0 && (
-    <section class="py-16">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-text mb-4">Latest Updates</h2>
-          <p class="text-text-light text-lg max-w-2xl mx-auto">
-            News and insights from our community.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-          {recentPosts.map((post) => (
-            <article class="bg-white rounded-xl shadow-lg overflow-hidden border border-border hover:shadow-xl transition-shadow">
-              <div class="p-6">
-                <time class="text-sm text-text-light" datetime={post.data.date.toISOString()}>
-                  {post.data.date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
-                </time>
-                <h3 class="text-xl font-bold text-text mt-2 mb-3">
-                  <a href={`/blog/${post.slug}`} class="hover:text-primary transition-colors">
-                    {post.data.title}
-                  </a>
-                </h3>
-                <p class="text-text-light line-clamp-3">{post.data.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div class="text-center">
-          <a href="/blog" class="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
-            View All Posts
-          </a>
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- ============ 11. Newsletter capture ============ -->
+  <!-- ============ 8. Newsletter ============ -->
   <NewsletterSignup />
 </BaseLayout>

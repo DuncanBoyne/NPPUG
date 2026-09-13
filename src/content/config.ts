@@ -10,6 +10,13 @@ const eventsCollection = defineCollection({
     venue: z.string(),
     description: z.string(),
     speakers: z.array(z.string()).default([]),
+    // Talks on the night when the speaker has no profile in the speakers
+    // collection yet. Rendered on the homepage ticket and the event page.
+    sessions: z.array(z.object({
+      title: z.string(),
+      speaker: z.string(),
+      image: z.string().optional(),
+    })).default([]),
     sponsors: z.array(z.string()).default([]),
     youtubePlaylist: z.string().optional(),
     youtubeVideos: z.array(z.object({

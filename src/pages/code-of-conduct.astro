@@ -9,16 +9,17 @@ import { SITE } from '../config';
   description="The Norfolk Power Platform User Group Code of Conduct — everyone is welcome, and everyone is looked after."
 >
   <Hero
+    kicker="Community"
     title="Code of Conduct"
     subtitle="Everyone is welcome, and everyone is looked after."
   />
 
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-3xl mx-auto space-y-10">
-        <div>
-          <h2 class="text-2xl font-bold text-text mb-4">Our commitment</h2>
-          <p class="text-text-light">
+  <section class="section" aria-label="Code of conduct">
+    <div class="wrap">
+      <div class="max-w-3xl flex flex-col gap-12 md:gap-14">
+        <div class="flex flex-col gap-4">
+          <h2 class="h-card text-[26px] md:text-[28px] text-text">Our commitment</h2>
+          <p class="text-[17px] leading-relaxed text-text-light">
             The Norfolk Power Platform User Group is committed to a respectful, friendly, and
             professional environment for everyone, regardless of gender, gender identity, sexual
             orientation, disability, physical appearance, age, race, or religion. This applies at
@@ -26,9 +27,9 @@ import { SITE } from '../config';
           </p>
         </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-text mb-4">We expect everyone to</h2>
-          <ul class="space-y-3 text-text-light list-disc pl-6">
+        <div class="flex flex-col gap-4">
+          <h2 class="h-card text-[26px] md:text-[28px] text-text">We expect everyone to</h2>
+          <ul class="flex flex-col gap-3 text-[17px] leading-relaxed text-text-light list-disc pl-6 marker:text-primary">
             <li>Be friendly and welcoming — especially to people attending for the first time.</li>
             <li>Show courtesy and respect to speakers: phones on silent, save conversations for the break.</li>
             <li>Respect differing opinions and experience levels — seek to understand rather than criticise.</li>
@@ -38,32 +39,32 @@ import { SITE } from '../config';
           </ul>
         </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-text mb-4">Zero tolerance</h2>
-          <p class="text-text-light">
+        <div class="flex flex-col gap-4">
+          <h2 class="h-card text-[26px] md:text-[28px] text-text">Zero tolerance</h2>
+          <p class="text-[17px] leading-relaxed text-text-light">
             We have zero tolerance for harassment, discrimination, or any behaviour that degrades
             others. Discriminatory or exclusionary jokes are not appropriate. Anyone violating this
             code may be asked to leave an event at the organisers' sole discretion.
           </p>
         </div>
 
-        <div class="bg-background-alt rounded-xl p-6">
-          <h2 class="text-2xl font-bold text-text mb-4">Reporting a problem</h2>
-          <p class="text-text-light mb-4">
+        <div class="card-tint p-7 md:p-8 flex flex-col gap-4">
+          <h2 class="h-card text-[26px] md:text-[28px] text-text">Reporting a problem</h2>
+          <p class="text-[17px] leading-relaxed text-text-light">
             If something makes you uncomfortable at an event — however small it seems — please tell
             an organiser on the night. We wear name badges and we will take it seriously, in
             confidence, straight away.
           </p>
-          <p class="text-text-light">
+          <p class="text-[17px] leading-relaxed text-text-light">
             You can also reach us afterwards via
-            <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark font-medium">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
-            or the <a href="/contact" class="text-primary hover:text-primary-dark font-medium">contact page</a>.
+            <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-dark font-semibold">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+            or the <a href="/contact" class="text-primary hover:text-primary-dark font-semibold">contact page</a>.
           </p>
         </div>
 
-        <div>
-          <h2 class="text-2xl font-bold text-text mb-4">Accessibility</h2>
-          <p class="text-text-light">
+        <div class="flex flex-col gap-4">
+          <h2 class="h-card text-[26px] md:text-[28px] text-text">Accessibility</h2>
+          <p class="text-[17px] leading-relaxed text-text-light">
             Our events are free and open to all. Each event page lists the venue details — if you
             have an access or dietary requirement, let us know when you register or via the contact
             page and we'll sort it before the night.

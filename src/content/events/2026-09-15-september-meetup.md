@@ -6,6 +6,13 @@ location: Virtual
 venue: Online
 description: Join us for our September virtual meetup, with Neil Rowlands on thinking like a Power Platform architect and Rob Kuijpers on what agents really cost.
 speakers: []
+sessions:
+  - title: Thinking like a Power Platform architect
+    speaker: Neil Rowlands
+    image: /images/speakers/Neil-Rowlands.webp
+  - title: What do agents really cost?
+    speaker: Rob Kuijpers
+    image: /images/speakers/Rob-Kuijpers.webp
 registrationUrl: https://www.meetup.com/norfolk-power-platform-user-group/events/316398998/
 isPast: false
 ---

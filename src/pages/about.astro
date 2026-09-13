@@ -10,108 +10,111 @@ const organizers = allSpeakers.filter(s => s.data.isOrganizer);
 
 <BaseLayout title="About" description="Learn about the Norfolk Power Platform User Group - our mission, organizers, and how to get involved.">
   <Hero
+    kicker="Who we are"
     title="About Us"
     subtitle="Connect, learn, share, and grow together."
   />
 
   <!-- Mission Section -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold text-text mb-6">Our Mission</h2>
-        <p class="text-lg text-text-light mb-6">
+  <section class="section" aria-labelledby="mission-heading">
+    <div class="wrap flex flex-col gap-10 md:gap-12">
+      <div class="max-w-3xl flex flex-col gap-5">
+        <span class="kicker">Our mission</span>
+        <h2 id="mission-heading" class="h-section text-text">Our Mission</h2>
+        <p class="lede">
           The Norfolk Power Platform User Group is a community organization for Microsoft Power Platform
           enthusiasts across Norwich and Norfolk. We believe in the power of community - bringing people
           together to learn from each other, share experiences, and grow their skills.
         </p>
-        <p class="text-lg text-text-light mb-6">
+        <p class="text-[17px] leading-relaxed text-text-light">
           Whether you're just getting started with your first Power App, automating complex business
           processes with Power Automate, building insightful reports in Power BI, or exploring the
           possibilities of Copilot Studio - you'll find a welcoming community here.
         </p>
+      </div>
 
-        <div class="grid md:grid-cols-2 gap-8 my-12">
-          <div class="bg-white p-6 rounded-xl shadow-lg border border-border">
-            <h3 class="text-xl font-bold text-text mb-3">What We Do</h3>
-            <ul class="space-y-3 text-text-light">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Monthly meetups with technical demonstrations and real-world use cases</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Guest speaker sessions from industry experts and community members</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Networking opportunities with like-minded professionals</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-primary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Q&A sessions and open discussions</span>
-              </li>
-            </ul>
-          </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="card p-7 md:p-8 flex flex-col gap-5">
+          <h3 class="h-card text-text">What We Do</h3>
+          <ul class="flex flex-col gap-3.5 text-[15px] leading-relaxed text-text-light">
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-primary mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 5-5" />
+              </svg>
+              <span>Monthly meetups with technical demonstrations and real-world use cases</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-primary mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 5-5" />
+              </svg>
+              <span>Guest speaker sessions from industry experts and community members</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-primary mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 5-5" />
+              </svg>
+              <span>Networking opportunities with like-minded professionals</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-primary mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 5-5" />
+              </svg>
+              <span>Q&A sessions and open discussions</span>
+            </li>
+          </ul>
+        </div>
 
-          <div class="bg-white p-6 rounded-xl shadow-lg border border-border">
-            <h3 class="text-xl font-bold text-text mb-3">Who Should Join</h3>
-            <ul class="space-y-3 text-text-light">
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-secondary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                </svg>
-                <span>Beginners curious about Power Platform</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-secondary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                </svg>
-                <span>Citizen developers building apps for their teams</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-secondary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                </svg>
-                <span>Professional developers and architects</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-secondary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                </svg>
-                <span>IT managers and business analysts</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-5 h-5 text-secondary mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
-                </svg>
-                <span>Anyone interested in low-code/no-code solutions</span>
-              </li>
-            </ul>
-          </div>
+        <div class="card p-7 md:p-8 flex flex-col gap-5">
+          <h3 class="h-card text-text">Who Should Join</h3>
+          <ul class="flex flex-col gap-3.5 text-[15px] leading-relaxed text-text-light">
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" />
+              </svg>
+              <span>Beginners curious about Power Platform</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" />
+              </svg>
+              <span>Citizen developers building apps for their teams</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" />
+              </svg>
+              <span>Professional developers and architects</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" />
+              </svg>
+              <span>IT managers and business analysts</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-accent mt-px shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" />
+              </svg>
+              <span>Anyone interested in low-code/no-code solutions</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Organizers Section -->
-  <section class="py-16 bg-background-alt">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-text mb-4">Meet the Organizers</h2>
-        <p class="text-text-light text-lg max-w-2xl mx-auto">
+  <section class="section section-white" aria-labelledby="organizers-heading">
+    <div class="wrap flex flex-col gap-10">
+      <div class="max-w-3xl flex flex-col gap-4">
+        <span class="kicker">The organizers</span>
+        <h2 id="organizers-heading" class="h-section text-text">Meet the Organizers</h2>
+        <p class="lede">
           Our volunteer team works to bring you great events and build a thriving community.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {organizers.map((organizer) => (
           <SpeakerCard
             name={organizer.data.name}
@@ -129,47 +132,47 @@ const organizers = allSpeakers.filter(s => s.data.isOrganizer);
   </section>
 
   <!-- Related Events Section -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-text mb-6">East of England Power Platform Summit</h2>
-        <p class="text-lg text-text-light mb-8">
+  <section class="section" aria-labelledby="summit-heading">
+    <div class="wrap">
+      <div class="card-tint p-7 md:p-10 flex flex-col gap-5">
+        <span class="kicker">The summit</span>
+        <h2 id="summit-heading" class="h-section text-text max-w-3xl">East of England Power Platform Summit</h2>
+        <p class="lede max-w-3xl">
           We're also the organizers of the inaugural East of England Power Platform Summit - a
           groundbreaking community-focused event coming in May 2026. This two-day conference will
           bring together Power Platform enthusiasts from across the region.
         </p>
-        <a
-          href="https://eoepps.co.uk/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-block bg-primary text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-dark transition-colors"
-        >
-          Learn More About the Summit<span class="sr-only"> (opens in new tab)</span>
-        </a>
+        <div class="pt-1">
+          <a
+            href="https://eoepps.co.uk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary btn-lg"
+          >
+            Learn More About the Summit<span class="sr-only"> (opens in new tab)</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Get Involved CTA -->
-  <section class="py-16 bg-gradient-to-br from-primary to-secondary text-white">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-4">Get Involved</h2>
-      <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-        There are many ways to participate in our community - attend events, become a speaker, or help spread the word.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="/events"
-          class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-        >
-          View Upcoming Events
-        </a>
-        <a
-          href="/contact"
-          class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-        >
-          Become a Speaker
-        </a>
+  <section class="section section-dark" aria-labelledby="get-involved-heading">
+    <div class="wrap">
+      <div class="max-w-3xl flex flex-col gap-5">
+        <span class="kicker kicker-on-dark">Get involved</span>
+        <h2 id="get-involved-heading" class="h-section text-white">Get Involved</h2>
+        <p class="lede text-text-on-dark">
+          There are many ways to participate in our community - attend events, become a speaker, or help spread the word.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <a href="/events" class="btn btn-primary btn-lg">
+            View Upcoming Events
+          </a>
+          <a href="/contact" class="btn btn-ghost-on-dark btn-lg">
+            Become a Speaker
+          </a>
+        </div>
       </div>
     </div>
   </section>

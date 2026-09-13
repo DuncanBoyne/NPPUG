@@ -10,15 +10,16 @@ const speakers = allSpeakers.filter(s => !s.data.isOrganizer);
 
 <BaseLayout title="Speakers" description="Meet the speakers who present at Norfolk Power Platform User Group events.">
   <Hero
+    kicker="Speakers"
     title="Our Speakers"
     subtitle="Meet the talented individuals who share their knowledge at our events."
   />
 
   <!-- Speakers -->
   {speakers.length > 0 ? (
-    <section class="py-16">
-      <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <section class="section" aria-label="Speaker profiles">
+      <div class="wrap">
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {speakers.map((speaker) => (
             <SpeakerCard
               name={speaker.data.name}
@@ -35,26 +36,31 @@ const speakers = allSpeakers.filter(s => !s.data.isOrganizer);
       </div>
     </section>
   ) : (
-    <section class="py-16">
-      <div class="container mx-auto px-4 text-center">
-        <p class="text-text-light text-lg mb-8">Speaker profiles coming soon! Check back after our upcoming events.</p>
+    <section class="section">
+      <div class="wrap">
+        <div class="card p-8 md:p-10 text-center">
+          <p class="text-lg text-text-light">Speaker profiles coming soon! Check back after our upcoming events.</p>
+        </div>
       </div>
     </section>
   )}
 
   <!-- CTA Section -->
-  <section class="py-16 bg-primary text-white">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-4">Become a Speaker</h2>
-      <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+  <section class="section section-dark" aria-labelledby="become-speaker-heading">
+    <div class="wrap flex flex-col items-center text-center gap-5">
+      <span class="kicker kicker-on-dark">Get involved</span>
+      <h2 id="become-speaker-heading" class="h-section text-white max-w-2xl">Become a Speaker</h2>
+      <p class="lede text-text-on-dark max-w-2xl">
         We welcome speakers of all experience levels. Whether it's your first time presenting or you're a seasoned pro, we'd love to hear from you.
       </p>
-      <a
-        href="/contact"
-        class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-      >
-        Submit a Talk Proposal
-      </a>
+      <div class="pt-2">
+        <a href="/contact" class="btn btn-primary btn-lg">
+          Submit a Talk Proposal
+          <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

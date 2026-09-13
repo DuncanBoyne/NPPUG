@@ -5,49 +5,26 @@
 import { SITE, NEWSLETTER_FORM_ACTION } from '../config';
 ---
 
-<section class="py-16 bg-gradient-to-br from-primary/5 to-secondary/5" aria-labelledby="newsletter-heading">
-  <div class="container mx-auto px-4">
-    <div class="max-w-2xl mx-auto text-center">
-      <h2 id="newsletter-heading" class="text-3xl font-bold text-text mb-4">Never Miss a Meetup</h2>
-      <p class="text-text-light text-lg mb-8">
-        Get each event in your inbox first, plus speaker announcements and photos from the night.
-        No spam — monthly at most.
-      </p>
+<section class="wrap pb-16 md:pb-24" aria-labelledby="newsletter-heading">
+  <div class="card px-6 py-8 md:px-12 md:py-11 grid gap-6 lg:grid-cols-12 lg:items-center">
+    <div class="lg:col-span-6 flex flex-col gap-2">
+      <h2 id="newsletter-heading" class="font-display font-extrabold tracking-tight text-2xl md:text-[28px] leading-tight text-text">One email a month. The next date, the speakers, nothing else.</h2>
+      <p class="text-[15px] text-text-light">Unsubscribe any time. We never share your address.</p>
+    </div>
 
+    <div class="lg:col-span-6">
       {NEWSLETTER_FORM_ACTION ? (
-        <form action={NEWSLETTER_FORM_ACTION} method="post" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <form action={NEWSLETTER_FORM_ACTION} method="post" class="flex flex-col sm:flex-row gap-3">
           <label for="newsletter-email" class="sr-only">Email address</label>
-          <input
-            id="newsletter-email"
-            type="email"
-            name="email"
-            required
-            placeholder="you@example.com"
-            class="flex-grow px-4 py-3 rounded-lg border border-border focus:border-primary bg-white text-text"
-          />
-          <button
-            type="submit"
-            class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
-          >
-            Subscribe
-          </button>
+          <input id="newsletter-email" type="email" name="email" required placeholder="you@company.co.uk" class="input flex-grow" />
+          <button type="submit" class="btn btn-primary shrink-0">Keep me posted</button>
         </form>
       ) : (
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href={SITE.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-block bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
-          >
+        <div class="flex flex-col sm:flex-row gap-3 lg:justify-end">
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
             Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span>
           </a>
-          <a
-            href="/contact"
-            class="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors"
-          >
-            Ask to Join the Mailing List
-          </a>
+          <a href="/contact" class="btn btn-ghost">Ask to join the mailing list</a>
         </div>
       )}
     </div>

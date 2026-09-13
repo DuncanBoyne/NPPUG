@@ -27,25 +27,29 @@ const pastEvents = allEvents
 
 <BaseLayout title="Events" description="Upcoming and past events from the Norfolk Power Platform User Group.">
   <Hero
+    kicker="What's on"
     title="Events"
     subtitle="Join us for our regular meetups featuring technical demos, guest speakers, and networking."
   />
 
   <!-- Event Calendar & Upcoming Events -->
-  <section class="py-16">
-    <div class="container mx-auto px-4">
-      <div class="grid lg:grid-cols-3 gap-8">
+  <section class="section" aria-labelledby="upcoming-heading">
+    <div class="wrap">
+      <div class="grid gap-10 lg:grid-cols-3 lg:gap-8">
         <!-- Calendar Sidebar -->
         <div class="lg:col-span-1">
           <EventCalendar />
         </div>
 
         <!-- Upcoming Events -->
-        <div class="lg:col-span-2">
-          <h2 class="text-3xl font-bold text-text mb-8">Upcoming Events</h2>
+        <div class="lg:col-span-2 flex flex-col gap-8">
+          <div class="flex flex-col gap-4">
+            <span class="kicker">Coming up</span>
+            <h2 id="upcoming-heading" class="h-section text-text">Upcoming Events</h2>
+          </div>
 
           {upcomingEvents.length > 0 ? (
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid gap-5 md:grid-cols-2">
               {upcomingEvents.map((event) => (
                 <EventCard
                   title={event.data.title}
@@ -61,15 +65,15 @@ const pastEvents = allEvents
               ))}
             </div>
           ) : (
-            <div class="bg-background-alt rounded-xl p-8 text-center">
-              <p class="text-text-light text-lg mb-4">No upcoming events scheduled at the moment.</p>
-              <p class="text-text-light">
+            <div class="card p-8 md:p-10 text-center flex flex-col gap-3">
+              <p class="text-lg font-semibold text-text">No upcoming events scheduled at the moment.</p>
+              <p class="text-[15px] text-text-light">
                 Follow us on{' '}
                 <a
                   href="https://www.linkedin.com/company/norfolk-power-platform-user-group/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-primary hover:underline"
+                  class="text-primary font-semibold hover:text-primary-dark"
                 >
                   LinkedIn<span class="sr-only"> (opens in new tab)</span>
                 </a>{' '}
@@ -84,11 +88,14 @@ const pastEvents = allEvents
 
   <!-- Past Events -->
   {pastEvents.length > 0 && (
-    <section class="py-16 bg-background-alt">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-text mb-8">Past Events</h2>
+    <section id="past" class="section section-white" aria-labelledby="past-heading">
+      <div class="wrap flex flex-col gap-9">
+        <div class="flex flex-col gap-4">
+          <span class="kicker">Looking back</span>
+          <h2 id="past-heading" class="h-section text-text">Past Events</h2>
+        </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {pastEvents.map((event) => (
             <EventCard
               title={event.data.title}
@@ -108,20 +115,26 @@ const pastEvents = allEvents
   )}
 
   <!-- CTA Section -->
-  <section class="py-16 bg-primary text-white">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold mb-4">Want to Speak?</h2>
-      <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+  <section class="section section-dark" aria-labelledby="speak-heading">
+    <div class="wrap flex flex-col items-center text-center gap-5">
+      <span class="kicker kicker-on-dark">Speakers</span>
+      <h2 id="speak-heading" class="h-section text-white max-w-2xl">Want to Speak?</h2>
+      <p class="lede text-text-on-dark max-w-2xl">
         We're always looking for speakers to share their knowledge and experiences. First-time speakers welcome!
       </p>
-      <a
-        href="https://sessionize.com/norfolk-power-platform-user-group-IP/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-      >
-        Submit a Talk on Sessionize<span class="sr-only"> (opens in new tab)</span>
-      </a>
+      <div class="pt-2">
+        <a
+          href="https://sessionize.com/norfolk-power-platform-user-group-IP/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-lg"
+        >
+          Submit a Talk on Sessionize<span class="sr-only"> (opens in new tab)</span>
+          <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

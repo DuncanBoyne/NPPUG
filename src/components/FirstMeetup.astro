@@ -1,72 +1,34 @@
 ---
-// "Your first meetup — what to expect" promise block.
-// Used on the homepage and on every upcoming event page so newcomers always
-// know exactly what they are walking into.
+// "Your first meetup" promise block. Used on the homepage and on upcoming
+// event pages so newcomers always know exactly what they are walking into.
 const steps = [
-  { time: '6:15pm', text: 'Doors open — grab pizza and a drink, say hello (or don’t, that’s fine too)' },
-  { time: '6:30pm', text: 'A short welcome from the organisers' },
-  { time: '6:45pm', text: 'Two talks with real demos, and a break in between' },
-  { time: '8:45pm', text: 'Done — stay for networking or head straight home' },
+  { time: '18:15', title: 'Doors open, pizza arrives', text: 'Grab a slice, find a seat, say hello to whoever is nearest. Or don’t, that is fine too.' },
+  { time: '18:30', title: 'Welcome and quick intros', text: 'Who we are, what is coming up, and a thank-you to the sponsor paying for the room.' },
+  { time: '18:40', title: 'Two talks with a break between', text: 'Real demos from people who built the thing. Questions welcome throughout.' },
+  { time: '20:30', title: 'Networking, then home by 20:45', text: 'Stay for a chat or slip out. Both are fine.' },
 ];
 ---
 
-<section class="py-16 bg-white" aria-labelledby="first-meetup-heading">
-  <div class="container mx-auto px-4">
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-10">
-        <h2 id="first-meetup-heading" class="text-3xl md:text-4xl font-bold text-text mb-4">
-          Your First Meetup — What to Expect
-        </h2>
-        <p class="text-text-light text-lg max-w-2xl mx-auto">
-          Coming somewhere new on your own is the hardest part. Here's exactly how the evening goes,
-          so there are no surprises.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8 items-start">
-        <ol class="space-y-4">
-          {steps.map((step) => (
-            <li class="flex items-start bg-background-alt rounded-lg p-4">
-              <span class="font-bold text-primary w-20 flex-shrink-0">{step.time}</span>
-              <span class="text-text-light">{step.text}</span>
-            </li>
-          ))}
-        </ol>
-
-        <div class="bg-primary/5 border border-primary/20 rounded-xl p-6">
-          <h3 class="font-bold text-text mb-3">Our promise to first-timers</h3>
-          <ul class="space-y-3 text-text-light">
-            <li class="flex items-start">
-              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span>Come alone — you won't stay alone. An organiser will say hello and introduce you around.</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span>No experience needed, nothing to prepare, and nobody will make you speak.</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span>No sales pitches — talks are real demos and real experience from real practitioners.</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span>It's completely free — the pizza too — thanks to our sponsors.</span>
-            </li>
-          </ul>
-          <p class="text-sm text-text-light mt-4">
-            We run our events under a <a href="/code-of-conduct" class="text-primary hover:text-primary-dark font-medium">Code of Conduct</a> —
-            everyone is welcome, and everyone is looked after.
-          </p>
-        </div>
-      </div>
+<section class="section" aria-labelledby="first-meetup-heading">
+  <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-5 flex flex-col gap-5">
+      <span class="kicker">Your first meetup</span>
+      <h2 id="first-meetup-heading" class="h-section text-text">Never been? Here is exactly how the evening goes.</h2>
+      <p class="lede">Turn up on your own, sit anywhere, ask anything. Nobody will try to sell you something and nobody minds if you have never opened Power Apps.</p>
+      <p class="text-[15px] text-text-light">It is completely free, the pizza too, thanks to our sponsors. Everything runs under our
+        <a href="/code-of-conduct" class="text-primary font-semibold hover:text-primary-dark">code of conduct</a>.</p>
     </div>
+
+    <ol class="lg:col-span-7 card px-6 md:px-10 py-3 md:py-5 flex flex-col">
+      {steps.map((step, i) => (
+        <li class:list={['grid grid-cols-[72px_1fr] md:grid-cols-[96px_1fr] gap-4 md:gap-6 py-4 md:py-5', i < steps.length - 1 && 'border-b border-border']}>
+          <span class="font-display font-bold text-xl md:text-[22px] text-primary">{step.time}</span>
+          <div class="flex flex-col gap-1">
+            <span class="font-bold text-[17px] text-text">{step.title}</span>
+            <span class="text-[15px] text-text-light">{step.text}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
   </div>
 </section>

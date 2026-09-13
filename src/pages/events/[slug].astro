@@ -23,6 +23,9 @@ const isPast = eventEnd < now;
 
 const allSpeakers = await getCollection('speakers');
 const eventSpeakers = allSpeakers.filter(s => event.data.speakers.includes(s.slug));
+const sessions = event.data.sessions;
+
+const initials = (name: string) => name.split(' ').map(n => n[0]).join('').toUpperCase();
 
 // Times are stored without a timezone and parsed as UTC, so format in UTC
 // to display the wall-clock time as written (matches EventCard).
@@ -45,61 +48,56 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
   minute: '2-digit',
   timeZone: 'UTC',
 });
+
+const isOnline = /online|virtual/i.test(`${event.data.venue} ${event.data.location}`);
+const place = isOnline ? 'Online, on Teams' : `${event.data.venue}, ${event.data.location}`;
 ---
 
 <BaseLayout title={event.data.title} description={event.data.description}>
   <!-- Hero -->
-  <section class="bg-gradient-to-br from-primary via-primary-dark to-secondary text-white py-16">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl">
-        {isPast ? (
-          <span class="inline-block px-4 py-1 bg-white/20 rounded-full text-sm mb-4">
-            Past Event
-          </span>
-        ) : (
-          <span class="inline-block px-4 py-1 bg-white/20 rounded-full text-sm mb-4">
-            Upcoming Event
-          </span>
-        )}
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">{event.data.title}</h1>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="max-w-3xl flex flex-col gap-5">
+        <div class="flex items-center gap-2">
+          <span class:list={['pill', isPast ? '' : 'pill-primary']}>{isPast ? 'Past event' : 'Upcoming'}</span>
+          {!isPast && <span class="pill pill-free">Free</span>}
+        </div>
+        <h1 class="h-display text-text">{event.data.title}</h1>
 
-        <div class="flex flex-wrap gap-6 text-white/90">
-          <div class="flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-[15px] md:text-base text-text-light">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M8 3v4M16 3v4M3 10h18" />
             </svg>
             <span>{formattedDate}</span>
           </div>
-          <div class="flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
             </svg>
-            <span>{formattedTime}{endTime && ` - ${endTime}`}</span>
+            <span>{formattedTime}{endTime && ` to ${endTime}`}</span>
           </div>
-          <div class="flex items-center">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>{event.data.venue}, {event.data.location}</span>
+          <div class="flex items-center gap-2">
+            {isOnline ? (
+              <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="13" rx="2" /><path d="M8 21h8" /></svg>
+            ) : (
+              <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z" /><circle cx="12" cy="11" r="2.5" /></svg>
+            )}
+            <span>{place}</span>
           </div>
         </div>
 
         {!isPast && (
-          <div class="mt-8">
+          <div class="pt-2">
             {event.data.registrationUrl ? (
-              <a
-                href={event.data.registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-              >
-                Register Free<span class="sr-only"> (opens in new tab)</span>
+              <a href={event.data.registrationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                Register free<span class="sr-only"> (opens in new tab)</span>
+                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
               </a>
             ) : (
-              <p class="text-white/90 text-lg">
-                <strong>Free to attend — no ticket needed.</strong> Just turn up on the night, and
-                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="underline font-semibold hover:text-white ml-1">follow us on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+              <p class="lede">
+                <strong class="text-text">Free to attend, no ticket needed.</strong> Just turn up on the night, and
+                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">follow us on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
                 for any updates.
               </p>
             )}
@@ -109,97 +107,119 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
     </div>
   </section>
 
-  <div class="container mx-auto px-4 py-12">
-    <div class="grid lg:grid-cols-3 gap-12">
-      <!-- Main Content -->
-      <div class="lg:col-span-2">
+  <div class="wrap py-12 md:py-16">
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+      <!-- Main content -->
+      <div class="lg:col-span-8 flex flex-col gap-12">
         <div class="prose prose-lg max-w-none">
           <Content />
         </div>
 
-        <!-- YouTube Videos -->
+        <!-- YouTube videos -->
         {event.data.youtubeVideos.length > 0 && (
-          <div class="mt-12">
-            <h2 class="text-2xl font-bold text-text mb-6">Watch the Recordings</h2>
-            <div class="space-y-6">
+          <section class="flex flex-col gap-6" aria-labelledby="recordings-heading">
+            <h2 id="recordings-heading" class="h-card text-[26px] text-text">Watch the recordings</h2>
+            <div class="flex flex-col gap-6">
               {event.data.youtubeVideos.map((video) => (
-                <div>
-                  <h3 class="text-lg font-semibold text-text mb-3">{video.title}</h3>
+                <div class="flex flex-col gap-3">
+                  <h3 class="font-semibold text-lg text-text">{video.title}</h3>
                   <YouTubeEmbed videoId={video.videoId} title={video.title} />
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         <!-- Resources -->
         {event.data.resources.length > 0 && (
-          <div class="mt-12">
-            <h2 class="text-2xl font-bold text-text mb-6">Resources</h2>
-            <ul class="space-y-3">
+          <section class="flex flex-col gap-5" aria-labelledby="resources-heading">
+            <h2 id="resources-heading" class="h-card text-[26px] text-text">Resources</h2>
+            <ul class="flex flex-col gap-3">
               {event.data.resources.map((resource) => (
                 <li>
-                  <a
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center p-4 bg-background-alt rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    <svg class="w-5 h-5 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <a href={resource.url} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-3 p-4 hover:border-primary transition-colors">
+                    <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" />
                     </svg>
-                    <span class="font-medium text-text">{resource.title}<span class="sr-only"> (opens in new tab)</span></span>
-                    <span class="ml-2 text-sm text-text-light">({resource.type})</span>
+                    <span class="font-semibold text-text">{resource.title}<span class="sr-only"> (opens in new tab)</span></span>
+                    <span class="pill ml-auto">{resource.type}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 flex flex-col gap-5">
+        <!-- Talks on the night (sessions without speaker profiles) -->
+        {sessions.length > 0 && (
+          <div class="card p-6 flex flex-col gap-4">
+            <h3 class="text-[13px] font-bold tracking-[0.1em] uppercase text-text-light">{sessions.length === 1 ? 'The talk' : 'Talks'}</h3>
+            <ul class="flex flex-col gap-4">
+              {sessions.map((talk, i) => (
+                <li class="flex items-center gap-3.5">
+                  <div class:list={['w-14 h-14 rounded-full overflow-hidden shrink-0 flex items-end justify-center', i % 2 === 0 ? 'bg-primary-tint' : 'bg-secondary-tint']} aria-hidden="true">
+                    {talk.image ? (
+                      <img src={talk.image} alt="" class="w-12 h-[60px] object-cover object-top" />
+                    ) : (
+                      <span class="w-14 h-14 flex items-center justify-center font-display font-bold text-primary-deep">{initials(talk.speaker)}</span>
+                    )}
+                  </div>
+                  <div class="flex flex-col gap-0.5">
+                    <span class="font-bold text-text">{talk.title}</span>
+                    <span class="text-sm text-text-light">{talk.speaker}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <!-- Speakers with profiles -->
+        {eventSpeakers.length > 0 && (
+          <div class="card p-6 flex flex-col gap-4">
+            <h3 class="text-[13px] font-bold tracking-[0.1em] uppercase text-text-light">Speakers</h3>
+            <ul class="flex flex-col gap-1">
+              {eventSpeakers.map((speaker) => (
+                <li>
+                  <a href={`/speakers/${speaker.slug}`} class="flex items-center gap-3 -mx-2 p-2 rounded-xl hover:bg-surface-muted transition-colors">
+                    {speaker.data.image ? (
+                      <img src={speaker.data.image} alt="" class="w-12 h-12 rounded-full object-cover shrink-0" />
+                    ) : (
+                      <div class="w-12 h-12 rounded-full bg-primary-tint text-primary-deep flex items-center justify-center font-display font-bold shrink-0" aria-hidden="true">
+                        {initials(speaker.data.name)}
+                      </div>
+                    )}
+                    <div class="flex flex-col gap-0.5 min-w-0">
+                      <span class="font-semibold text-text">{speaker.data.name}</span>
+                      <span class="text-sm text-text-light">{speaker.data.title}</span>
+                    </div>
                   </a>
                 </li>
               ))}
             </ul>
           </div>
         )}
-      </div>
-
-      <!-- Sidebar -->
-      <div class="lg:col-span-1">
-        <!-- Speakers -->
-        {eventSpeakers.length > 0 && (
-          <div class="bg-background-alt rounded-xl p-6 mb-6">
-            <h3 class="text-xl font-bold text-text mb-4">Speakers</h3>
-            <div class="space-y-4">
-              {eventSpeakers.map((speaker) => (
-                <a href={`/speakers/${speaker.slug}`} class="flex items-center hover:bg-gray-200 p-2 rounded-lg transition-colors">
-                  {speaker.data.image ? (
-                    <img
-                      src={speaker.data.image}
-                      alt={speaker.data.name}
-                      class="w-12 h-12 rounded-full object-cover mr-3"
-                    />
-                  ) : (
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold mr-3">
-                      {speaker.data.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                  )}
-                  <div>
-                    <div class="font-semibold text-text">{speaker.data.name}</div>
-                    <div class="text-sm text-text-light">{speaker.data.title}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
 
         <!-- Sponsors -->
         {event.data.sponsors.length > 0 && (
-          <div class="bg-background-alt rounded-xl p-6">
-            <h3 class="text-xl font-bold text-text mb-4">Sponsors</h3>
-            <ul class="space-y-2">
+          <div class="card p-6 flex flex-col gap-3">
+            <h3 class="text-[13px] font-bold tracking-[0.1em] uppercase text-text-light">Sponsors</h3>
+            <ul class="flex flex-col gap-2">
               {event.data.sponsors.map((sponsor) => (
-                <li class="text-text-light">{sponsor}</li>
+                <li class="text-text">{sponsor}</li>
               ))}
             </ul>
           </div>
         )}
-      </div>
+
+        <div class="card-tint p-6 flex flex-col gap-3">
+          <span class="kicker">Good to know</span>
+          <p class="text-[15px] leading-relaxed text-text-light">Every NPPUG event is free and runs under our <a href="/code-of-conduct" class="text-primary font-semibold hover:text-primary-dark">code of conduct</a>. Bring a colleague.</p>
+        </div>
+      </aside>
     </div>
   </div>
 
@@ -207,74 +227,45 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
   {!isPast && <FirstMeetup />}
 
   <!-- Bottom conversion CTA -->
-  <section class="py-16 bg-primary text-white">
-    <div class="container mx-auto px-4 text-center">
-      {!isPast ? (
-        <>
-          <h2 class="text-3xl font-bold mb-4">See You There?</h2>
-          <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            It's free, it's friendly, and there's pizza. Bring a colleague.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            {event.data.registrationUrl ? (
-              <a
-                href={event.data.registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-              >
-                Register Free<span class="sr-only"> (opens in new tab)</span>
-              </a>
-            ) : (
-              <a
-                href={SITE.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-              >
-                Follow for Updates<span class="sr-only"> (opens in new tab)</span>
-              </a>
-            )}
-            <a
-              href="/speak"
-              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-            >
-              Speak at a Future Meetup
-            </a>
-          </div>
-        </>
-      ) : (
-        <>
-          <h2 class="text-3xl font-bold mb-4">Don't Miss the Next One</h2>
-          <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            We meet every month in Norwich — free talks, demos, and networking.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/events"
-              class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-            >
-              See Upcoming Events
-            </a>
-            <a
-              href="/speak"
-              class="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
-            >
-              Speak at a Future Meetup
-            </a>
-          </div>
-        </>
-      )}
+  <section class="section section-dark">
+    <div class="wrap">
+      <div class="max-w-3xl flex flex-col gap-5">
+        {!isPast ? (
+          <>
+            <span class="kicker kicker-on-dark">See you there?</span>
+            <h2 class="h-section text-white">It's free, it's friendly, and there's pizza. Bring a colleague.</h2>
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              {event.data.registrationUrl ? (
+                <a href={event.data.registrationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                  Register free<span class="sr-only"> (opens in new tab)</span>
+                </a>
+              ) : (
+                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                  Follow for updates<span class="sr-only"> (opens in new tab)</span>
+                </a>
+              )}
+              <a href="/speak" class="btn btn-ghost-on-dark btn-lg">Speak at a future meetup</a>
+            </div>
+          </>
+        ) : (
+          <>
+            <span class="kicker kicker-on-dark">Don't miss the next one</span>
+            <h2 class="h-section text-white">We meet every month in Norwich. Free talks, demos and networking.</h2>
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              <a href="/events" class="btn btn-primary btn-lg">See upcoming events</a>
+              <a href="/speak" class="btn btn-ghost-on-dark btn-lg">Speak at a future meetup</a>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   </section>
 
-  <!-- Back Link -->
-  <div class="container mx-auto px-4 py-8">
-    <a href="/events" class="inline-flex items-center text-primary font-semibold hover:text-primary-dark transition-colors">
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-      Back to All Events
+  <!-- Back link -->
+  <div class="wrap py-8">
+    <a href="/events" class="link-arrow">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M11 18l-6-6 6-6" /></svg>
+      Back to all events
     </a>
   </div>
 </BaseLayout>

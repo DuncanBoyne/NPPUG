@@ -1,24 +1,43 @@
 @import "tailwindcss";
 
-/* Norfolk Power Platform User Group - Custom Theme */
+/* Norfolk Power Platform User Group - 2026 theme
+   Warm cream ground, one purple accent, amber reserved for "free".
+   Display type: Bricolage Grotesque. Body: Instrument Sans. */
 @theme {
-  /* Purple primary with warm complementary colors */
+  --font-sans: 'Instrument Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+
+  /* Brand */
   --color-primary: #7C3AED;
   --color-primary-light: #8B5CF6;
   --color-primary-dark: #6D28D9;
+  --color-primary-deep: #5B21B6;
+  --color-primary-tint: #F1EBFE;
+  --color-primary-soft: #C4B5FD;
 
   --color-secondary: #F59E0B;
   --color-secondary-light: #FBBF24;
   --color-secondary-dark: #D97706;
+  --color-secondary-tint: #FEF3DD;
+  --color-secondary-ink: #92400E;
 
   --color-accent: #2563EB;
+  --color-accent-soft: #93C5FD;
 
-  /* Neutral colors */
-  --color-text: #323130;
-  --color-text-light: #605E5C;
-  --color-background: #FFFFFF;
-  --color-background-alt: #F5F5F5;
-  --color-border: #E1E1E1;
+  /* Neutrals */
+  --color-ink: #1E1B2E;
+  --color-ink-raised: #29253D;
+  --color-ink-line: #3A3652;
+  --color-text: #1E1B2E;
+  --color-text-light: #5B5870;
+  --color-text-faint: #9B97B0;
+  --color-text-on-dark: #B8B4CC;
+  --color-background: #FBF9F5;
+  --color-background-alt: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F3F0EA;
+  --color-border: #E6E2DA;
+  --color-border-strong: #D9D3C8;
 
   /* Power Platform product colors */
   --color-power-apps: #742774;
@@ -28,7 +47,44 @@
   --color-copilot-studio: #7719AA;
 }
 
-/* Accessibility utilities */
+/* ---------------------------------------------------------------
+   Base
+   --------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Accessibility utilities
+   --------------------------------------------------------------- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -52,7 +108,6 @@
   white-space: inherit;
 }
 
-/* Skip link */
 .skip-link {
   position: absolute;
   top: -40px;
@@ -68,7 +123,6 @@
   top: 0;
 }
 
-/* Focus styles for accessibility */
 *:focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: 2px;
@@ -80,30 +134,203 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* Base styles */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+/* ---------------------------------------------------------------
+   Site vocabulary. Every page uses these; do not restyle per page.
+   --------------------------------------------------------------- */
+@layer components {
+  /* Page width */
+  .wrap {
+    width: 100%;
+    max-width: 1232px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (min-width: 768px) {
+    .wrap { padding-inline: 24px; }
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  /* Small caps label above a heading */
+  .kicker {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
-}
+  .kicker-on-dark { color: var(--color-primary-soft); }
 
-body {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-  color: var(--color-text);
-  background-color: var(--color-background);
+  /* Headline sizes */
+  .h-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    font-size: clamp(40px, 5vw, 72px);
+  }
+  .h-section {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-size: clamp(30px, 3.2vw, 44px);
+  }
+  .h-card {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-size: 24px;
+  }
+  .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-text-light);
+    text-wrap: pretty;
+  }
+  @media (min-width: 768px) {
+    .lede { font-size: 20px; }
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: #FFFFFF;
+    border-color: var(--color-primary);
+  }
+  .btn-primary:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); color: #FFFFFF; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+  .btn-ghost:hover { border-color: var(--color-text); color: var(--color-text); }
+  .btn-ghost-on-dark {
+    background: transparent;
+    color: #FFFFFF;
+    border-color: var(--color-ink-line);
+  }
+  .btn-ghost-on-dark:hover { border-color: #FFFFFF; color: #FFFFFF; }
+  .btn-amber {
+    background: var(--color-secondary);
+    color: var(--color-ink);
+    border-color: var(--color-secondary);
+  }
+  .btn-amber:hover { background: var(--color-secondary-dark); border-color: var(--color-secondary-dark); color: var(--color-ink); }
+  .btn-sm { min-height: 40px; padding: 10px 18px; font-size: 15px; }
+  .btn-lg { min-height: 54px; padding: 16px 28px; font-size: 17px; }
+
+  /* Inline arrow link */
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .link-arrow:hover { color: var(--color-primary-dark); }
+  .link-arrow svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Cards */
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+  }
+  .card-muted {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+  .card-dark {
+    background: var(--color-ink-raised);
+    border-radius: 20px;
+    color: #FFFFFF;
+  }
+  .card-tint {
+    background: var(--color-primary-tint);
+    border-radius: 24px;
+  }
+
+  /* Pills */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--color-surface-muted);
+    color: var(--color-text-light);
+  }
+  .pill-free {
+    background: var(--color-secondary-tint);
+    color: var(--color-secondary-ink);
+    font-weight: 700;
+  }
+  .pill-primary {
+    background: var(--color-primary-tint);
+    color: var(--color-primary-deep);
+    font-weight: 700;
+  }
+
+  /* Section rhythm */
+  .section { padding-block: 64px; }
+  @media (min-width: 768px) {
+    .section { padding-block: 96px; }
+  }
+  .section-white {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .section-dark {
+    background: var(--color-ink);
+    color: #FFFFFF;
+  }
+
+  /* Page hero (every inner page) */
+  .page-hero {
+    padding-block: 56px 48px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  @media (min-width: 768px) {
+    .page-hero { padding-block: 80px 64px; }
+  }
+
+  /* Form controls */
+  .input {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-border-strong);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 16px;
+  }
+  .input:focus { border-color: var(--color-primary); outline: none; }
+  .input-block { border-radius: 14px; }
+  textarea.input { min-height: 140px; border-radius: 14px; resize: vertical; }
 }
 
 /* ---------------------------------------------------------------
@@ -197,9 +424,9 @@ body {
 }
 
 .prose blockquote {
-  border-left: 4px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
   padding-left: 1.25rem;
-  font-style: italic;
+  color: var(--color-text-light);
   margin-top: 1.5em;
   margin-bottom: 1.5em;
 }
@@ -228,13 +455,12 @@ body {
   gap: 0.5rem;
   background-color: var(--color-primary);
   color: #FFFFFF;
-  padding: 0.875rem 1.75rem;
-  border-radius: 0.5rem;
-  font-weight: 700;
-  font-size: 1.0625rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  transition: background-color 0.15s ease;
 }
 
 .cta-button:hover,
@@ -242,11 +468,4 @@ body {
   background-color: var(--color-primary-dark);
   color: #FFFFFF;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
-  transform: translateY(-1px);
-}
-
-.cta-button:active,
-.prose a.cta-button:active {
-  transform: translateY(0);
 }

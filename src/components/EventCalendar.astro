@@ -35,10 +35,11 @@ function formatTime(date: Date): string {
 }
 ---
 
-<div class="bg-white rounded-xl shadow-lg border border-border overflow-hidden">
-  <div class="bg-primary text-white px-6 py-4">
-    <h3 class="text-lg font-bold">2026 Event Schedule</h3>
-    <p class="text-sm text-white/80">Upcoming meetups and events</p>
+<div class="card overflow-hidden">
+  <div class="px-6 pt-6 pb-5 border-b border-border flex flex-col gap-1.5">
+    <span class="kicker">Diary</span>
+    <h3 class="font-display font-bold text-xl tracking-tight text-text">2026 Event Schedule</h3>
+    <p class="text-sm text-text-light">Upcoming meetups and events</p>
   </div>
 
   <div class="divide-y divide-border">
@@ -50,26 +51,17 @@ function formatTime(date: Date): string {
       const isVirtual = event.type === 'virtual';
 
       return (
-        <div class="flex items-center px-6 py-4 hover:bg-background-alt transition-colors">
-          <div class:list={[
-            "w-14 h-14 rounded-lg flex flex-col items-center justify-center mr-4",
-            isConference ? "bg-secondary/10" : "bg-primary/10"
-          ]}>
-            <span class:list={[
-              "text-xs font-medium uppercase",
-              isConference ? "text-secondary" : "text-primary"
-            ]}>
-              {event.date.toLocaleDateString('en-GB', { month: 'short' })}
+        <div class="flex items-center gap-4 px-6 py-4 hover:bg-background transition-colors">
+          <div class="w-14 h-14 rounded-2xl bg-primary-tint flex flex-col items-center justify-center shrink-0" aria-hidden="true">
+            <span class="text-[11px] font-bold tracking-[0.1em] uppercase text-primary">
+              {event.date.toLocaleDateString('en-GB', { month: 'short' }).slice(0, 3)}
             </span>
-            <span class:list={[
-              "text-xl font-bold",
-              isConference ? "text-secondary" : "text-primary"
-            ]}>
+            <span class="font-display font-bold text-xl leading-none text-primary-deep">
               {isConference && event.endDate ? `${dayNum}-${event.endDate.getDate()}` : dayNum}
             </span>
           </div>
-          <div class="flex-1">
-            <div class="font-semibold text-text">
+          <div class="flex-1 min-w-0 flex flex-col gap-1">
+            <div class="font-bold text-text">
               {event.title}
             </div>
             <div class="text-sm text-text-light">
@@ -83,15 +75,15 @@ function formatTime(date: Date): string {
                 </span>
               )}
             </div>
-            <div class="mt-1">
+            <div class="pt-0.5">
               {isConference ? (
-                <a href={event.url} target="_blank" rel="noopener noreferrer" class="inline-block text-xs bg-secondary text-white px-2 py-0.5 rounded-full hover:bg-secondary/90">
+                <a href={event.url} target="_blank" rel="noopener noreferrer" class="pill pill-primary hover:bg-primary hover:text-white transition-colors">
                   Conference
                 </a>
               ) : isVirtual ? (
-                <span class="inline-block text-xs bg-accent text-white px-2 py-0.5 rounded-full">Virtual</span>
+                <span class="pill">Virtual</span>
               ) : (
-                <span class="inline-block text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">In Person</span>
+                <span class="pill">In Person</span>
               )}
             </div>
           </div>
@@ -100,7 +92,7 @@ function formatTime(date: Date): string {
     })}
   </div>
 
-  <div class="px-6 py-4 bg-background-alt text-center">
+  <div class="px-6 py-4 bg-background border-t border-border text-center">
     <p class="text-sm text-text-light">
       In-person events held at Spaces Digital Hub, Townshend House, Norwich
     </p>
