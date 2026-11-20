@@ -8,9 +8,10 @@ interface Props {
   image?: string;
   linkedin?: string;
   twitter?: string;
+  website?: string;
 }
 
-const { name, title, company, bio, slug, image, linkedin, twitter } = Astro.props;
+const { name, title, company, bio, slug, image, linkedin, twitter, website } = Astro.props;
 
 const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
 ---
@@ -53,6 +54,13 @@ const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
         <a href={twitter} target="_blank" rel="noopener noreferrer" class="text-text-faint hover:text-primary transition-colors" aria-label={`${name}'s X profile (opens in new tab)`}>
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </a>
+      )}
+      {website && (
+        <a href={website} target="_blank" rel="noopener" class="text-text-faint hover:text-primary transition-colors" aria-label={`${name}'s website (opens in new tab)`}>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 3.75 5.7 3.75 9s-1.25 6.3-3.75 9c-2.5-2.7-3.75-5.7-3.75-9S9.5 5.7 12 3z" />
           </svg>
         </a>
       )}
