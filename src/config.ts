@@ -8,7 +8,7 @@ export const SITE = {
     "Norfolk's Microsoft community. Free monthly meetups in Norwich for everyone working with Power Platform, Power BI, Fabric, Dynamics 365, and Copilot.",
   linkedin: 'https://www.linkedin.com/company/norfolk-power-platform-user-group/',
   sessionize: 'https://sessionize.com/norfolk-power-platform-user-group-IP/',
-  eoepps: 'https://eoepps.co.uk/',
+  eoepps: 'https://www.eoes.co.uk/',
   sponsorPack: '/documents/NPPUG Sponsorship pack.pdf',
   founded: 2025,
 };
