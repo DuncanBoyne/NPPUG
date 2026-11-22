@@ -2,22 +2,66 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
+import { abs, breadcrumbNode, organizationNode, websiteNode, OG_IMAGE } from '../lib/schema';
 
 interface Props {
   title: string;
   description?: string;
+  // Share image (site path or absolute URL). Defaults to the 1200x630 site card.
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+  // Page-specific JSON-LD nodes, added to the site-wide Organization + WebSite graph.
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description = "Norfolk's Microsoft community. Free monthly meetups in Norwich for everyone working with Power Platform, Power BI, Fabric, Dynamics 365, and Copilot." } = Astro.props;
+const {
+  title,
+  description = "Norfolk's Microsoft community. Free monthly meetups in Norwich for everyone working with Power Platform, Power BI, Fabric, Dynamics 365, and Copilot.",
+  image,
+  imageAlt,
+  noindex = false,
+  schema = [],
+} = Astro.props;
+
+// Canonical form is the trailing-slash URL GitHub Pages serves with a 200.
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const isHome = path === '/';
+const canonical = abs(path);
+const fullTitle = isHome ? `${SITE.name} | Free Microsoft meetups in Norwich` : `${title} | ${SITE.name}`;
+const shareTitle = isHome ? fullTitle : title;
+const ogImage = abs(image ?? OG_IMAGE);
+const ogImageAlt = imageAlt ?? (image ? title : `${SITE.name}: free Microsoft meetups in Norwich`);
+
+// Breadcrumbs from the URL: Home > Section > this page.
+const sections: Record<string, string> = { events: 'Events', speakers: 'Speakers', blog: 'Blog' };
+const segments = path.split('/').filter(Boolean);
+const crumbs = isHome || noindex
+  ? []
+  : [
+      { name: 'Home', path: '/' },
+      ...segments.map((seg, i) => ({
+        name: i === segments.length - 1 ? title : (sections[seg] ?? seg),
+        path: `/${segments.slice(0, i + 1).join('/')}/`,
+      })),
+    ];
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [organizationNode, websiteNode, ...(crumbs.length ? [breadcrumbNode(crumbs)] : []), ...schema],
+};
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href="/images/Logo.png" />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#FBF9F5" />
 
@@ -29,12 +73,26 @@ const { title, description = "Norfolk's Microsoft community. Free monthly meetup
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={title} />
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content={shareTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    {!noindex && <meta property="og:url" content={canonical} />}
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:image" content={ogImage} />
+    {!image && <meta property="og:image:width" content="1200" />}
+    {!image && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={shareTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <title>{title} | Norfolk Power Platform User Group</title>
+    <script type="application/ld+json" set:html={JSON.stringify(graph).replace(/</g, '\\u003c')} />
+
+    <title>{fullTitle}</title>
 
     <!-- Umami Analytics -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="eb9815e7-105e-4da6-9c77-e7ebd85b2196"></script>

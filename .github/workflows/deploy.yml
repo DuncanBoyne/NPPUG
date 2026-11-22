@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Daily rebuild so "upcoming" and "past" events move over without a push.
+  # 04:00 UTC is 04:00 GMT / 05:00 BST. GitHub pauses scheduled workflows after 60 days
+  # with no activity in the repo; a push or a manual run re-enables it.
+  schedule:
+    - cron: '0 4 * * *'
 
 permissions:
   contents: read

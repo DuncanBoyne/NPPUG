@@ -4,24 +4,24 @@ import { SITE } from '../config';
 const currentYear = new Date().getFullYear();
 
 const eventLinks = [
-  { href: '/events', label: 'Upcoming' },
-  { href: '/events#past', label: 'Past events' },
-  { href: SITE.eoepps, label: 'EoEPPS summit', external: true },
+  { href: '/events/', label: 'Upcoming' },
+  { href: '/events/#past', label: 'Past events' },
+  { href: SITE.eoepps, label: 'EoES summit', external: true },
 ];
 
 const communityLinks = [
-  { href: '/speakers', label: 'Speakers' },
-  { href: '/speak', label: 'Speak at NPPUG' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/speakers/', label: 'Speakers' },
+  { href: '/speak/', label: 'Speak at NPPUG' },
+  { href: '/resources/', label: 'Resources' },
+  { href: '/blog/', label: 'Blog' },
 ];
 
 const groupLinks = [
-  { href: '/about', label: 'About' },
-  { href: '/team', label: 'Team' },
-  { href: '/sponsorship', label: 'Sponsorship' },
-  { href: '/code-of-conduct', label: 'Code of conduct' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/about/', label: 'About' },
+  { href: '/team/', label: 'Team' },
+  { href: '/sponsorship/', label: 'Sponsorship' },
+  { href: '/code-of-conduct/', label: 'Code of conduct' },
+  { href: '/contact/', label: 'Contact' },
 ];
 ---
 
@@ -31,7 +31,7 @@ const groupLinks = [
       <!-- Brand -->
       <div class="md:col-span-5 flex flex-col gap-4">
         <div class="flex items-center gap-3">
-          <img src="/images/Logo.png" alt="" class="h-9 w-auto" aria-hidden="true" />
+          <img src="/images/logo-header.png" alt="" width="108" height="88" loading="lazy" decoding="async" class="h-9 w-auto" aria-hidden="true" />
           <span class="font-display font-extrabold text-lg md:text-xl tracking-tight">Norfolk Power Platform User Group</span>
         </div>
         <p class="text-text-on-dark text-[15px] leading-relaxed max-w-sm">
@@ -80,7 +80,7 @@ const groupLinks = [
     </div>
 
     <div class="border-t border-ink-line pt-5 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
-      <p class="text-text-faint text-[13px]">&copy; {currentYear} {SITE.name}. Run by volunteers. Every event is free and runs under our <a href="/code-of-conduct" class="underline hover:text-white">code of conduct</a>.</p>
+      <p class="text-text-faint text-[13px]">&copy; {currentYear} {SITE.name}. Run by volunteers. Every event is free and runs under our <a href="/code-of-conduct/" class="underline hover:text-white">code of conduct</a>.</p>
       <p class="text-text-faint text-[13px]">nppug.co.uk</p>
     </div>
   </div>

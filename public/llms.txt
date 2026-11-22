@@ -1,0 +1,27 @@
+# Norfolk Power Platform User Group (NPPUG)
+
+> Free meetups in Norwich, Norfolk, UK for people who work with Microsoft Power Platform, Power BI, Fabric, Dynamics 365 and Copilot. Run by volunteers since 2025. Beginners and experienced builders are both welcome.
+
+## Facts
+
+- What: a volunteer-run user group with talks, demos and networking.
+- Who it is for: makers, analysts, admins, developers and architects working with Microsoft Power Platform, Power BI, Fabric, Dynamics 365 and Copilot, from first-timers to experienced builders.
+- Where: in-person meetups are at Spaces Digital Hub, Townshend House, 30 Crown Road, Norwich NR1 3DT. Some meetups are online, on Microsoft Teams.
+- When: in-person meetups run from 18:00 to 20:30. Dates are listed on the events page and on Meetup.
+- Cost: every event is free.
+- Register: each meetup is listed on Meetup, https://www.meetup.com/norfolk-power-platform-user-group/
+- Speak: submit a talk on Sessionize, https://sessionize.com/norfolk-power-platform-user-group2468/ (first-time speakers welcome). Details: https://www.nppug.co.uk/speak/
+- Sponsor: packages and the sponsorship pack are at https://www.nppug.co.uk/sponsorship/
+- Sister conference: the East of England Summit (formerly the East of England Power Platform Summit), https://www.eoes.co.uk/ , on Friday 30 April and Saturday 1 May 2027 at The Space, Norwich.
+- LinkedIn: https://www.linkedin.com/company/norfolk-power-platform-user-group/
+
+## Key pages
+
+- [Home](https://www.nppug.co.uk/): the next meetup and how the evening runs
+- [Events](https://www.nppug.co.uk/events/): upcoming and past meetups, with speakers and registration links
+- [Speakers](https://www.nppug.co.uk/speakers/): people who have spoken at NPPUG
+- [Speak at NPPUG](https://www.nppug.co.uk/speak/): how to submit a talk
+- [Become a sponsor](https://www.nppug.co.uk/sponsorship/): sponsorship packages
+- [About](https://www.nppug.co.uk/about/): who we are and who should come
+- [Code of conduct](https://www.nppug.co.uk/code-of-conduct/)
+- [Contact](https://www.nppug.co.uk/contact/)

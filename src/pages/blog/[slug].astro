@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { SITE } from '../../config';
+import { abs, orgRef, personId, OG_IMAGE } from '../../lib/schema';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -16,6 +18,22 @@ const { Content } = await post.render();
 const allSpeakers = await getCollection('speakers');
 const author = allSpeakers.find(s => s.slug === post.data.author);
 
+const postNode = {
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString().slice(0, 10),
+  url: abs(`/blog/${post.slug}/`),
+  mainEntityOfPage: abs(`/blog/${post.slug}/`),
+  author: author
+    ? { '@type': 'Person', '@id': personId(author.slug), name: author.data.name, url: abs(`/speakers/${author.slug}/`) }
+    : { '@type': 'Organization', name: SITE.name },
+  publisher: orgRef,
+  image: abs(post.data.image ?? OG_IMAGE),
+  inLanguage: 'en-GB',
+  ...(post.data.tags.length > 0 && { keywords: post.data.tags.join(', ') }),
+};
+
 const formattedDate = post.data.date.toLocaleDateString('en-GB', {
   weekday: 'long',
   year: 'numeric',
@@ -24,7 +42,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 });
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} schema={[postNode]}>
   <article>
     <!-- Header -->
     <header class="page-hero">
@@ -45,11 +63,13 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 
           <div class="flex items-center gap-4 pt-2">
             {author ? (
-              <a href={`/speakers/${author.slug}`} class="flex items-center gap-3 group">
+              <a href={`/speakers/${author.slug}/`} class="flex items-center gap-3 group">
                 {author.data.image ? (
                   <img
                     src={author.data.image}
                     alt={author.data.name}
+                    width="48"
+                    height="48"
                     class="w-12 h-12 rounded-full object-cover shrink-0"
                   />
                 ) : (
@@ -85,7 +105,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 
   <!-- Back Link -->
   <div class="wrap pb-12 md:pb-16">
-    <a href="/blog" class="link-arrow">
+    <a href="/blog/" class="link-arrow">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M11 6l-6 6 6 6" />
       </svg>

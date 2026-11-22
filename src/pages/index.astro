@@ -4,6 +4,8 @@ import EventCard from '../components/EventCard.astro';
 import FirstMeetup from '../components/FirstMeetup.astro';
 import GetInvolved from '../components/GetInvolved.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
+import PlannedDates from '../components/PlannedDates.astro';
+import { isOnlineEvent } from '../lib/events';
 import { getCollection } from 'astro:content';
 import { SITE, STATS } from '../config';
 
@@ -43,9 +45,9 @@ const nextMonth = nextEvent?.data.date.toLocaleDateString('en-GB', { month: 'sho
 const nextWeekday = nextEvent?.data.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
 const nextStart = nextEvent?.data.date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
 const nextEnd = nextEvent?.data.endDate?.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
-const nextIsOnline = nextEvent ? /online|virtual/i.test(`${nextEvent.data.venue} ${nextEvent.data.location}`) : false;
+const nextIsOnline = nextEvent ? isOnlineEvent(nextEvent) : false;
 const nextPlace = nextEvent ? (nextIsOnline ? 'Online, on Teams' : `${nextEvent.data.venue}, ${nextEvent.data.location}`) : '';
-const nextCtaUrl = nextEvent ? (nextEvent.data.registrationUrl ?? `/events/${nextEvent.slug}`) : '/events';
+const nextCtaUrl = nextEvent ? (nextEvent.data.registrationUrl ?? `/events/${nextEvent.slug}/`) : '/events/';
 const nextCtaLabel = nextEvent?.data.registrationUrl?.includes('meetup.com') ? 'Register on Meetup' : 'Register free';
 
 // Outcome-framed topic tiles: product + what attending helps you do.
@@ -111,7 +113,7 @@ const topics = [
             </div>
             <div class="flex flex-col gap-2 min-w-0">
               <h2 id="next-meetup-heading" class="h-card text-[26px] text-text">
-                <a href={`/events/${nextEvent.slug}`} class="hover:text-primary transition-colors">{nextEvent.data.title.replace(/\s\d{4}\s/, ' ')}</a>
+                <a href={`/events/${nextEvent.slug}/`} class="hover:text-primary transition-colors">{nextEvent.data.title.replace(/\s\d{4}\s/, ' ')}</a>
               </h2>
               <div class="flex items-center gap-2 text-[15px] text-text-light">
                 <svg class="w-[18px] h-[18px] text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
@@ -143,7 +145,7 @@ const topics = [
                     <li class="flex items-center gap-3.5">
                       <div class:list={['w-14 h-14 rounded-full overflow-hidden shrink-0 flex items-end justify-center', i % 2 === 0 ? 'bg-primary-tint' : 'bg-secondary-tint']} aria-hidden="true">
                         {talk.image ? (
-                          <img src={talk.image} alt="" class="w-12 h-[60px] object-cover object-top" />
+                          <img src={talk.image} alt="" width="48" height="60" class="w-12 h-[60px] object-cover object-top" />
                         ) : (
                           <span class="w-14 h-14 flex items-center justify-center font-display font-bold text-primary-deep">{initials(talk.speaker)}</span>
                         )}
@@ -163,7 +165,7 @@ const topics = [
               <a href={nextCtaUrl} class="btn btn-primary flex-1 whitespace-nowrap px-4 text-[15px]" target={nextEvent.data.registrationUrl ? '_blank' : undefined} rel={nextEvent.data.registrationUrl ? 'noopener noreferrer' : undefined}>
                 {nextCtaLabel}{nextEvent.data.registrationUrl && <span class="sr-only"> (opens in new tab)</span>}
               </a>
-              <a href={`/events/${nextEvent.slug}`} class="btn btn-ghost flex-1 whitespace-nowrap px-4 text-[15px]">Event details</a>
+              <a href={`/events/${nextEvent.slug}/`} class="btn btn-ghost flex-1 whitespace-nowrap px-4 text-[15px]">Event details</a>
             </div>
           </div>
         </>
@@ -173,8 +175,9 @@ const topics = [
           <p class="text-[15px] text-text-light">We meet every month in Norwich. The next event goes up here first. Follow us on LinkedIn or check the events page so you don't miss it.</p>
           <div class="flex gap-2.5">
             <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary flex-1">Follow on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
-            <a href="/events" class="btn btn-ghost flex-1">All events</a>
+            <a href="/events/" class="btn btn-ghost flex-1">All events</a>
           </div>
+          <PlannedDates class="text-sm" />
         </div>
       )}
     </aside>
@@ -211,7 +214,7 @@ const topics = [
           <span class="kicker">What you will get out of it</span>
           <h2 id="topics-heading" class="h-section text-text">Every session is about doing something better at work.</h2>
         </div>
-        <a href="/events#past" class="link-arrow shrink-0">
+        <a href="/events/#past" class="link-arrow shrink-0">
           See past sessions
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
         </a>
@@ -239,7 +242,7 @@ const topics = [
             <span class="kicker">Coming up</span>
             <h2 id="coming-up-heading" class="h-section text-text">{comingUp.length === 1 ? 'Put it in your diary.' : `Put the next ${comingUp.length === 2 ? 'two' : 'three'} in your diary.`}</h2>
           </div>
-          <a href="/events" class="link-arrow shrink-0">
+          <a href="/events/" class="link-arrow shrink-0">
             All events
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
@@ -273,29 +276,29 @@ const topics = [
       <h2 class="font-display font-extrabold tracking-tight text-[28px] md:text-[32px] leading-[1.1] text-text">Our sponsors keep every event free.</h2>
       <p class="text-text-light">Please thank them when you see them.</p>
       <a href="https://gtptech.co.uk/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-5 border border-dashed border-border-strong rounded-2xl hover:border-primary transition-colors">
-        <img src="/images/sponsors/GTPTech.png" alt="GTP Tech Recruitment" class="h-11 w-auto max-w-[140px] object-contain" />
+        <img src="/images/sponsors/GTPTech.png" alt="GTP Tech Recruitment" width="758" height="300" loading="lazy" decoding="async" class="h-11 w-auto max-w-[140px] object-contain" />
         <span class="flex flex-col gap-0.5">
           <span class="font-bold text-text">GTP Tech Recruitment</span>
           <span class="text-sm text-text-light">Official recruitment partner<span class="sr-only"> (opens in new tab)</span></span>
         </span>
       </a>
       <div class="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-1">
-        <a href="/sponsorship" class="link-arrow">
+        <a href="/sponsorship/" class="link-arrow">
           Become a sponsor
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
         </a>
-        <a href="/sponsors" class="link-arrow text-text-light hover:text-text">Meet our sponsors</a>
+        <a href="/sponsors/" class="link-arrow text-text-light hover:text-text">Meet our sponsors</a>
       </div>
     </div>
 
     <div class="card-tint p-7 md:p-10 flex flex-col gap-5 relative overflow-hidden">
-      <img src="/images/Logo.png" alt="" class="absolute -right-10 -bottom-8 w-[260px] opacity-[0.18] -rotate-12 pointer-events-none" aria-hidden="true" />
+      <img src="/images/logo-520.png" alt="" width="520" height="425" loading="lazy" decoding="async" class="absolute -right-10 -bottom-8 w-[260px] h-auto opacity-[0.18] -rotate-12 pointer-events-none" aria-hidden="true" />
       <span class="kicker">Built in Norfolk, for Norfolk</span>
-      <h2 class="font-display font-extrabold tracking-tight text-[28px] md:text-[32px] leading-[1.1] text-text max-w-[420px]">We are also the team behind the East of England Power Platform Summit.</h2>
+      <h2 class="font-display font-extrabold tracking-tight text-[28px] md:text-[32px] leading-[1.1] text-text max-w-[420px]">We are also the team behind the East of England Summit.</h2>
       <p class="text-text-light max-w-[420px]">Founded in {SITE.founded} by volunteers. From a chance meeting, to a user group, to a flagship two-day summit.</p>
       <div class="mt-auto flex flex-wrap gap-3 pt-1 relative">
-        <a href="/about" class="btn btn-primary btn-sm">Our story</a>
-        <a href={SITE.eoepps} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm border-primary-soft">EoEPPS summit<span class="sr-only"> (opens in new tab)</span></a>
+        <a href="/about/" class="btn btn-primary btn-sm">Our story</a>
+        <a href={SITE.eoepps} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm border-primary-soft">EoES summit<span class="sr-only"> (opens in new tab)</span></a>
       </div>
     </div>
   </section>

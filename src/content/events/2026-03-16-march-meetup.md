@@ -8,7 +8,6 @@ description: Join us for our March virtual meetup featuring Power Platform talks
 speakers:
   - melissa-hale
   - emma-claire-shaw
-registrationUrl: https://teams.live.com/meet/9335866886586?p=dTbyF8Y2KKN9q4tg6L&eventType=community
 isPast: false
 ---
 
@@ -16,9 +15,7 @@ isPast: false
 
 Join us online for an evening of Power Platform learning and community!
 
-This month's event is virtual — join us on Microsoft Teams using the link below.
-
-[Join the Teams Meeting](https://teams.live.com/meet/9335866886586?p=dTbyF8Y2KKN9q4tg6L&eventType=community)
+This month's event was virtual, on Microsoft Teams.
 
 ### Schedule
 

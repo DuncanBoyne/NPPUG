@@ -3,7 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import EventCard from '../../components/EventCard.astro';
 import EventCalendar from '../../components/EventCalendar.astro';
+import PlannedDates from '../../components/PlannedDates.astro';
 import { getCollection } from 'astro:content';
+import { SITE } from '../../config';
+import { abs } from '../../lib/schema';
 
 const allEvents = await getCollection('events');
 const allSpeakers = await getCollection('speakers');
@@ -23,9 +26,20 @@ const upcomingEvents = allEvents
 const pastEvents = allEvents
   .filter(event => isEventPast(event))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const listNode = {
+  '@type': 'ItemList',
+  name: `${SITE.name} events`,
+  itemListElement: [...upcomingEvents, ...pastEvents].map((e, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: abs(`/events/${e.slug}/`),
+    name: e.data.title,
+  })),
+};
 ---
 
-<BaseLayout title="Events" description="Upcoming and past events from the Norfolk Power Platform User Group.">
+<BaseLayout title="Events" description="Upcoming and past events from the Norfolk Power Platform User Group." schema={[listNode]}>
   <Hero
     kicker="What's on"
     title="Events"
@@ -70,7 +84,7 @@ const pastEvents = allEvents
               <p class="text-[15px] text-text-light">
                 Follow us on{' '}
                 <a
-                  href="https://www.linkedin.com/company/norfolk-power-platform-user-group/"
+                  href={SITE.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-primary font-semibold hover:text-primary-dark"
@@ -81,6 +95,7 @@ const pastEvents = allEvents
               </p>
             </div>
           )}
+          <PlannedDates />
         </div>
       </div>
     </div>
@@ -124,7 +139,7 @@ const pastEvents = allEvents
       </p>
       <div class="pt-2">
         <a
-          href="https://sessionize.com/norfolk-power-platform-user-group-IP/"
+          href={SITE.sessionize}
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-primary btn-lg"

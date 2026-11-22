@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import { SITE } from '../config';
 ---
 
 <BaseLayout title="Contact" description="Get in touch with the Norfolk Power Platform User Group.">
@@ -65,7 +66,7 @@ import Hero from '../components/Hero.astro';
           <p class="text-[15px] leading-relaxed text-text-light">
             The Norfolk Power Platform User Group is run by volunteers who are passionate about the Power Platform community.
           </p>
-          <a href="/team" class="link-arrow pt-1">
+          <a href="/team/" class="link-arrow pt-1">
             Meet the team
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
@@ -116,7 +117,7 @@ import Hero from '../components/Hero.astro';
             </p>
             <div class="pt-1">
               <a
-                href="https://sessionize.com/norfolk-power-platform-user-group-IP/"
+                href={SITE.sessionize}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="btn btn-primary"
@@ -133,7 +134,7 @@ import Hero from '../components/Hero.astro';
           <p class="text-[15px] leading-relaxed text-text-light">
             Interested in sponsoring our events? We offer various sponsorship packages to help promote your brand to the Power Platform community.
           </p>
-          <a href="/sponsors" class="link-arrow pt-1">
+          <a href="/sponsors/" class="link-arrow pt-1">
             View sponsorship options
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>

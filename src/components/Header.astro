@@ -1,68 +1,70 @@
 ---
 // Site header. Cream ground, hairline underneath, one call to action.
 const navLinks = [
-  { href: '/events', label: 'Events' },
+  { href: '/events/', label: 'Events' },
   {
     label: 'Speakers',
-    href: '/speakers',
+    href: '/speakers/',
     children: [
-      { href: '/speakers', label: 'Our speakers' },
-      { href: '/speak', label: 'Speak at NPPUG' },
+      { href: '/speakers/', label: 'Our speakers' },
+      { href: '/speak/', label: 'Speak at NPPUG' },
     ],
   },
   {
     label: 'Sponsors',
-    href: '/sponsors',
+    href: '/sponsors/',
     children: [
-      { href: '/sponsors', label: 'Our sponsors' },
-      { href: '/sponsorship', label: 'Become a sponsor' },
+      { href: '/sponsors/', label: 'Our sponsors' },
+      { href: '/sponsorship/', label: 'Become a sponsor' },
     ],
   },
   {
     label: 'Resources',
-    href: '/resources',
+    href: '/resources/',
     children: [
-      { href: '/resources', label: 'All resources' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/knowledge-base', label: 'Knowledge base' },
+      { href: '/resources/', label: 'All resources' },
+      { href: '/blog/', label: 'Blog' },
+      { href: '/knowledge-base/', label: 'Knowledge base' },
     ],
   },
   {
     label: 'About',
-    href: '/about',
+    href: '/about/',
     children: [
-      { href: '/about', label: 'About us' },
-      { href: '/team', label: 'Our team' },
-      { href: '/code-of-conduct', label: 'Code of conduct' },
+      { href: '/about/', label: 'About us' },
+      { href: '/team/', label: 'Our team' },
+      { href: '/code-of-conduct/', label: 'Code of conduct' },
     ],
   },
-  { href: '/contact', label: 'Contact' },
+  { href: '/contact/', label: 'Contact' },
 ];
 
 const mobileLinks = [
   { href: '/', label: 'Home' },
-  { href: '/events', label: 'Events' },
-  { href: '/speakers', label: 'Speakers' },
-  { href: '/speak', label: 'Speak at NPPUG' },
-  { href: '/sponsors', label: 'Sponsors' },
-  { href: '/sponsorship', label: 'Become a sponsor' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/knowledge-base', label: 'Knowledge base' },
-  { href: '/about', label: 'About us' },
-  { href: '/team', label: 'Our team' },
-  { href: '/code-of-conduct', label: 'Code of conduct' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/events/', label: 'Events' },
+  { href: '/speakers/', label: 'Speakers' },
+  { href: '/speak/', label: 'Speak at NPPUG' },
+  { href: '/sponsors/', label: 'Sponsors' },
+  { href: '/sponsorship/', label: 'Become a sponsor' },
+  { href: '/resources/', label: 'Resources' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/knowledge-base/', label: 'Knowledge base' },
+  { href: '/about/', label: 'About us' },
+  { href: '/team/', label: 'Our team' },
+  { href: '/code-of-conduct/', label: 'Code of conduct' },
+  { href: '/contact/', label: 'Contact' },
 ];
 
-const currentPath = Astro.url.pathname;
+// Hrefs all end in "/", so normalise the current path the same way and match on prefix.
+const currentPath = Astro.url.pathname.replace(/\/?$/, '/');
+const matches = (href: string) => (href === '/' ? currentPath === '/' : currentPath.startsWith(href));
 
 const isActive = (link: { href: string; label: string }) => {
-  if (currentPath === link.href || currentPath.startsWith(link.href + '/')) return true;
-  if (link.label === 'Resources' && (currentPath.startsWith('/blog') || currentPath.startsWith('/knowledge-base'))) return true;
-  if (link.label === 'Speakers' && currentPath.startsWith('/speak')) return true;
-  if (link.label === 'Sponsors' && currentPath.startsWith('/sponsorship')) return true;
-  if (link.label === 'About' && (currentPath.startsWith('/team') || currentPath.startsWith('/code-of-conduct'))) return true;
+  if (matches(link.href)) return true;
+  if (link.label === 'Resources' && (matches('/blog/') || matches('/knowledge-base/'))) return true;
+  if (link.label === 'Speakers' && matches('/speak/')) return true;
+  if (link.label === 'Sponsors' && matches('/sponsorship/')) return true;
+  if (link.label === 'About' && (matches('/team/') || matches('/code-of-conduct/'))) return true;
   return false;
 };
 ---
@@ -72,7 +74,7 @@ const isActive = (link: { href: string; label: string }) => {
     <div class="h-16 md:h-[88px] flex items-center justify-between gap-6">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-3 shrink-0">
-        <img src="/images/Logo.png" alt="" class="h-9 md:h-11 w-auto" aria-hidden="true" />
+        <img src="/images/logo-header.png" alt="" width="108" height="88" class="h-9 md:h-11 w-auto" aria-hidden="true" />
         <span class="font-display font-extrabold text-xl md:text-[22px] tracking-tight text-text">NPPUG</span>
         <span class="sr-only">Norfolk Power Platform User Group, home</span>
       </a>
@@ -102,7 +104,7 @@ const isActive = (link: { href: string; label: string }) => {
                       href={child.href}
                       class:list={[
                         'block px-3 py-2 rounded-xl text-[15px] transition-colors',
-                        currentPath === child.href || currentPath.startsWith(child.href + '/')
+                        matches(child.href)
                           ? 'bg-primary-tint text-primary-deep font-semibold'
                           : 'text-text hover:bg-surface-muted',
                       ]}
@@ -128,7 +130,7 @@ const isActive = (link: { href: string; label: string }) => {
       </div>
 
       <!-- Desktop CTA -->
-      <a href="/events" class="btn btn-primary btn-sm hidden lg:inline-flex">
+      <a href="/events/" class="btn btn-primary btn-sm hidden lg:inline-flex">
         Next meetup
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
@@ -157,14 +159,14 @@ const isActive = (link: { href: string; label: string }) => {
             href={link.href}
             class:list={[
               'block px-3 py-3 rounded-xl text-base transition-colors',
-              currentPath === link.href ? 'bg-primary-tint text-primary-deep font-semibold' : 'text-text hover:bg-surface-muted',
+              matches(link.href) ? 'bg-primary-tint text-primary-deep font-semibold' : 'text-text hover:bg-surface-muted',
             ]}
           >
             {link.label}
           </a>
         ))}
       </div>
-      <a href="/events" class="btn btn-primary w-full mt-3">Next meetup</a>
+      <a href="/events/" class="btn btn-primary w-full mt-3">Next meetup</a>
     </div>
   </nav>
 </header>

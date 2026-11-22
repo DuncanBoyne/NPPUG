@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+  Source for public/images/og-card.png (1200x630 share image).
+  To re-render: open this file in a headless browser at 1200x630 and screenshot it,
+  e.g. with Playwright: page.setViewportSize({ width: 1200, height: 630 });
+  page.goto('file:///.../scripts/og-card.html'); page.screenshot({ path: 'public/images/og-card.png' }).
+  Colours and fonts follow docs/DESIGN.md.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;600;700&display=block" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    background: #FBF9F5;
+    color: #1E1B2E;
+    font-family: 'Instrument Sans', 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    padding: 72px 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .kicker {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7C3AED;
+  }
+  h1 {
+    font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 76px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    margin-top: 22px;
+    max-width: 700px;
+  }
+  p {
+    font-size: 30px;
+    line-height: 1.35;
+    color: #5B5870;
+    margin-top: 28px;
+    max-width: 660px;
+  }
+  .logo {
+    position: absolute;
+    right: 56px;
+    top: 130px;
+    width: 300px;
+  }
+  .bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 92px;
+    background: #1E1B2E;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .free {
+    background: #FEF3DD;
+    color: #92400E;
+    border-radius: 999px;
+    padding: 8px 22px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+  <span class="kicker">Norfolk's Microsoft community</span>
+  <h1>Norfolk Power Platform User Group</h1>
+  <p>Free monthly meetups in Norwich for everyone working with Power Platform, Power BI, Fabric, Dynamics 365 and Copilot.</p>
+  <img class="logo" src="../public/images/logo-520.png" alt="" />
+  <div class="bar">
+    <span>nppug.co.uk</span>
+    <span class="free">Free to attend</span>
+  </div>
+</body>
+</html>

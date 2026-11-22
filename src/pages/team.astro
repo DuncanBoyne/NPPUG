@@ -28,6 +28,10 @@ const teamMembers = allSpeakers.filter(s => s.data.isOrganizer);
                   <img
                     src={member.data.image}
                     alt={member.data.name}
+                    width="176"
+                    height="176"
+                    loading="lazy"
+                    decoding="async"
                     class="w-40 h-40 md:w-44 md:h-44 rounded-full object-cover border-4 border-surface"
                   />
                 ) : (
@@ -124,7 +128,7 @@ const teamMembers = allSpeakers.filter(s => s.data.isOrganizer);
           We're always looking for volunteers to help organize events, manage social media, or contribute in other ways. If you're passionate about Power Platform and community building, we'd love to hear from you.
         </p>
         <div class="pt-2">
-          <a href="/contact" class="btn btn-primary btn-lg">
+          <a href="/contact/" class="btn btn-primary btn-lg">
             Get in Touch
           </a>
         </div>

@@ -11,4 +11,4 @@ image: /images/speakers/Duncan-Boyne.jpg
 
 Duncan is one of the driving forces behind the Norfolk Power Platform User Group, working to build a vibrant community of Power Platform enthusiasts across the region.
 
-As a founder, Duncan focuses on creating welcoming, inclusive events where both beginners and experts can share knowledge and learn from each other. He's also the founder of the East of England Power Platform Summit.
+As a founder, Duncan focuses on creating welcoming, inclusive events where both beginners and experts can share knowledge and learn from each other. He's also the founder of the East of England Summit.

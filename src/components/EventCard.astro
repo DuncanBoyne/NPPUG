@@ -34,7 +34,7 @@ const placeLabel = isOnline ? 'Online' : location.split(',')[0].trim();
   </div>
 
   <h3 class="h-card text-text">
-    <a href={`/events/${slug}`} class="hover:text-primary transition-colors">{title}</a>
+    <a href={`/events/${slug}/`} class="hover:text-primary transition-colors">{title}</a>
   </h3>
 
   <div class="flex flex-col gap-1 text-sm text-text-light">
@@ -48,7 +48,7 @@ const placeLabel = isOnline ? 'Online' : location.split(',')[0].trim();
     <p class="text-sm text-text-light"><span class="font-semibold text-text">Speakers:</span> {speakers.join(', ')}</p>
   )}
 
-  <a href={`/events/${slug}`} class="link-arrow mt-auto pt-1">
+  <a href={`/events/${slug}/`} class="link-arrow mt-auto pt-1">
     Event details<span class="sr-only">: {title}</span>
     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />

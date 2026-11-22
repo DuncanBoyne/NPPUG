@@ -1,0 +1,26 @@
+---
+// One quiet line listing planned meetup dates from PLANNED_DATES in src/config.ts.
+// Renders nothing once every date has passed or has its own event page.
+import { getCollection } from 'astro:content';
+import { SITE } from '../config';
+import { visiblePlannedDates } from '../lib/events';
+
+interface Props {
+  class?: string;
+}
+
+const dates = visiblePlannedDates(await getCollection('events'));
+const fmt = (d: Date, opts: Intl.DateTimeFormatOptions) => d.toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
+const years = [...new Set(dates.map((d) => fmt(d, { year: 'numeric' })))].join(' and ');
+const days = dates.map((d) => fmt(d, { day: 'numeric', month: 'long' }));
+const list = days.length > 1 ? `${days.slice(0, -1).join(', ')} and ${days.at(-1)}` : days[0];
+---
+
+{dates.length > 0 && (
+  <p class:list={['text-[15px] text-text-light', Astro.props.class]}>
+    <span class="font-semibold text-text">Planned for {years}:</span>{' '}{list}. Dates are confirmed on
+    <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">Meetup<span class="sr-only"> (opens in new tab)</span></a>
+    nearer the time. Want to speak at one?
+    <a href={SITE.sessionize} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">Submit a talk<span class="sr-only"> (opens in new tab)</span></a>.
+  </p>
+)}

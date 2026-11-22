@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import { SITE } from '../config';
 
 const reasons = [
   {
@@ -78,9 +79,9 @@ const tiers = [
     subtitle="Partner with Norfolk's thriving Power Platform community."
     showCta={true}
     ctaText="Download the sponsorship pack"
-    ctaLink="/documents/NPPUG Sponsorship pack.pdf"
+    ctaLink={SITE.sponsorPack}
     secondaryCta="Talk to the team"
-    secondaryCtaLink="/contact"
+    secondaryCtaLink="/contact/"
   />
 
   <!-- Why sponsor -->
@@ -203,11 +204,11 @@ const tiers = [
       <div class="card-tint p-7 md:p-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <p class="lede max-w-xl">Download our full sponsorship pack for more details, or get in touch to discuss options.</p>
         <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-          <a href="/documents/NPPUG Sponsorship pack.pdf" target="_blank" class="btn btn-primary">
+          <a href={SITE.sponsorPack} target="_blank" rel="noopener" class="btn btn-primary">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
             Download Sponsorship Pack<span class="sr-only"> (opens in new tab)</span>
           </a>
-          <a href="/contact" class="btn btn-ghost">Contact Us</a>
+          <a href="/contact/" class="btn btn-ghost">Contact Us</a>
         </div>
       </div>
     </div>
@@ -220,7 +221,7 @@ const tiers = [
         <span class="kicker">Already on board</span>
         <h2 id="current-heading" class="h-section text-text">Join Our Sponsors</h2>
         <p class="lede">See who's already supporting the Norfolk Power Platform community.</p>
-        <a href="/sponsors" class="link-arrow pt-1">
+        <a href="/sponsors/" class="link-arrow pt-1">
           View Current Sponsors
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
         </a>
