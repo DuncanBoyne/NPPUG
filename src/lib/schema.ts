@@ -46,6 +46,7 @@ export const organizationNode = {
   description: SITE.tagline,
   foundingDate: String(SITE.founded),
   location: venuePlace(),
+  email: SITE.email,
   sameAs: [SITE.linkedin, SITE.meetup],
   // `founder` left out on purpose: two pages disagree on who founded the group.
 };

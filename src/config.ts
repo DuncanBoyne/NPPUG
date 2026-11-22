@@ -9,6 +9,8 @@ export const SITE = {
   url: 'https://www.nppug.co.uk',
   linkedin: 'https://www.linkedin.com/company/norfolk-power-platform-user-group/',
   meetup: 'https://www.meetup.com/norfolk-power-platform-user-group/',
+  // Shared inbox with the East of England Summit (same organisers).
+  email: 'info@eoes.co.uk',
   // Open call for speakers (open until 9 Sep 2027). The old "-IP" call closed on 31 Aug 2026.
   sessionize: 'https://sessionize.com/norfolk-power-platform-user-group2468/',
   // East of England Summit (formerly the East of England Power Platform Summit, EoEPPS).
