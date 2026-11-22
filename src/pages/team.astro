@@ -7,7 +7,11 @@ const allSpeakers = await getCollection('speakers');
 const teamMembers = allSpeakers.filter(s => s.data.isOrganizer);
 ---
 
-<BaseLayout title="Our Team" description="Meet the team behind the Norfolk Power Platform User Group.">
+<BaseLayout
+  title="Our Team"
+  fullTitle="Organisers of the Norfolk Power Platform User Group"
+  description="Meet the volunteers who run the Norfolk Power Platform User Group in Norwich: Adam Bezance, Chris Hinchcliffe, Duncan Boyne and Gemma Peck. Say hello."
+>
   <Hero
     kicker="The volunteers"
     title="Our Team"
@@ -125,7 +129,7 @@ const teamMembers = allSpeakers.filter(s => s.data.isOrganizer);
         <span class="kicker">Volunteer</span>
         <h2 id="help-heading" class="h-section text-text">Want to Help?</h2>
         <p class="lede">
-          We're always looking for volunteers to help organize events, manage social media, or contribute in other ways. If you're passionate about Power Platform and community building, we'd love to hear from you.
+          We're always looking for volunteers to help organise events, manage social media, or contribute in other ways. If you're passionate about Power Platform and community building, we'd love to hear from you.
         </p>
         <div class="pt-2">
           <a href="/contact/" class="btn btn-primary btn-lg">

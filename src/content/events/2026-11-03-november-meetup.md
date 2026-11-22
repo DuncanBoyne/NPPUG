@@ -4,7 +4,8 @@ date: 2026-11-03T18:00:00
 endDate: 2026-11-03T19:00:00
 location: Virtual
 venue: Online
-description: Our November virtual meetup, with Amy Hemingway on psychological safety as a delivery risk and Olufemi Olamoyegun on ten fixes that make Power BI reports faster.
+description: "From the 3 November 2026 online Norfolk Power Platform User Group: Amy Hemingway on psychological safety and Olufemi Olamoyegun on faster Power BI reports."
+seoTitle: "Psychological Safety and Power BI Speed: NPPUG Nov 2026"
 speakers: []
 sessions:
   - title: "Psychological Safety: The Delivery Risk You Can't Afford to Ignore"

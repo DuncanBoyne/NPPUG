@@ -1,0 +1,42 @@
+---
+// The next meetup as an event card, or a "next date coming" card with the Meetup link,
+// followed by the planned dates line. Used on the guide pages.
+import { getCollection } from 'astro:content';
+import EventCard from './EventCard.astro';
+import PlannedDates from './PlannedDates.astro';
+import { SITE } from '../config';
+
+const now = new Date();
+const events = await getCollection('events');
+const next = events
+  .filter((e) => (e.data.endDate ?? e.data.date) >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())[0];
+const speakers = Object.fromEntries((await getCollection('speakers')).map((s) => [s.slug, s.data.name]));
+---
+
+<div class="flex flex-col gap-5">
+  {next ? (
+    <div class="max-w-md">
+      <EventCard
+        title={next.data.title}
+        date={next.data.date}
+        endDate={next.data.endDate}
+        location={next.data.location}
+        venue={next.data.venue}
+        description={next.data.description}
+        slug={next.slug}
+        speakers={next.data.sessions.length > 0 ? next.data.sessions.map((s) => s.speaker) : next.data.speakers.map((s) => speakers[s] || s)}
+      />
+    </div>
+  ) : (
+    <div class="card p-6 md:p-7 flex flex-col gap-3 max-w-md">
+      <p class="font-semibold text-text">The next date is on its way.</p>
+      <p class="text-[15px] text-text-light">New meetups go up on the events page and on Meetup.</p>
+      <div class="flex flex-wrap gap-3 pt-1">
+        <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Join on Meetup<span class="sr-only"> (opens in new tab)</span></a>
+        <a href="/events/" class="btn btn-ghost btn-sm">All events</a>
+      </div>
+    </div>
+  )}
+  <PlannedDates />
+</div>

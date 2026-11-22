@@ -4,7 +4,8 @@ date: 2026-02-05T18:15:00
 endDate: 2026-02-05T20:45:00
 location: Norwich, Norfolk
 venue: Townshend House, 30 Crown Rd, Norwich NR1 3DT
-description: Join us for our February meetup featuring talks on Agentic AI, SQL Server with Power Apps, and building tech communities in Higher Education. Free pizza included!
+description: "Slides and talks from the 5 February 2026 NPPUG meetup in Norwich: Tammy Briggs on agentic AI, Chris Hinchcliffe on SQL Server, Simon Greenall on community."
+seoTitle: "Agentic AI, SQL Server and Power Apps: NPPUG Feb 2026"
 speakers:
   - tammy-briggs
   - chris-hinchcliffe
@@ -18,9 +19,9 @@ resources:
 
 ## About This Event
 
-Join us at **Townshend House** for our February meetup, an evening of practical learning, community stories, and proper tech conversations – plus free pizza, obviously 🍕
+Our February meetup at **Townshend House** was an evening of practical learning, community stories, and proper tech conversations – plus free pizza, obviously 🍕
 
-This month we’re covering everything from **Agentic AI** and what it actually means in practice, through to **building meaningful tech communities in higher education**, and a **hands-on look at SQL Server working alongside Power Apps**. Whether you’re deep in the Power Platform already or just getting started, you’ll walk away with ideas you can use the next day.
+We covered everything from **Agentic AI** and what it actually means in practice, through to **building meaningful tech communities in higher education**, and a **hands-on look at SQL Server working alongside Power Apps**. Whether you were deep in the Power Platform already or just getting started, there were ideas to use the next day.
 
 ---
 
@@ -60,8 +61,6 @@ You don’t need to be an expert, and you definitely don’t need to already kno
 
 ## Getting There
 
-**Townshend House** is centrally located in Norwich, with good public transport links and nearby parking options. Doors open at **6:15 PM**, so feel free to arrive early and settle in.
+**Townshend House** is centrally located in Norwich, with good public transport links and nearby parking options. Doors opened at **6:15 PM**.
 
----
 
-We’d love to see you there – bring a colleague, a friend, or just yourself and an appetite 🍕

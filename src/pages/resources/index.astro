@@ -2,9 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import { getCollection } from 'astro:content';
+import { decksByEvent } from '../../lib/events';
 
 const allResources = await getCollection('resources');
 const resources = allResources.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Slide decks recorded in speakers' `presentations`, grouped by event, newest first.
+const deckGroups = decksByEvent(await getCollection('events'), await getCollection('speakers'));
+const fmtDate = (d?: Date) => d?.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 const resourcesByType = {
   presentation: resources.filter(r => r.data.type === 'presentation'),
@@ -31,14 +36,53 @@ const typeIcons = {
 };
 ---
 
-<BaseLayout title="Resources" description="Presentations, videos, guides, and tools shared by our community.">
+<BaseLayout
+  title="Resources"
+  fullTitle="Slides and Guides from Our Meetups | NPPUG"
+  description="Slides from Norfolk Power Platform User Group talks plus a starter guide to Microsoft Power Platform. Free to download, shared by speakers at our meetups."
+>
   <Hero
     kicker="Resources"
     title="Resources"
     subtitle="Presentations, videos, guides, and tools shared by our community."
   />
 
-  <section class="section">
+  {deckGroups.length > 0 && (
+    <section class="section" aria-labelledby="slides-heading">
+      <div class="wrap flex flex-col gap-8">
+        <div class="flex flex-col gap-4">
+          <span class="kicker">From our meetups</span>
+          <h2 id="slides-heading" class="h-section text-text">Slides from our meetups</h2>
+        </div>
+        <div class="flex flex-col gap-8">
+          {deckGroups.map((group) => (
+            <div class="flex flex-col gap-4">
+              <h3 class="h-card text-[20px] text-text">
+                {group.event ? (
+                  <a href={`/events/${group.event.slug}/`} class="hover:text-primary transition-colors">{group.label}</a>
+                ) : group.label}
+                {group.date && <span class="block text-sm font-sans font-normal text-text-light mt-1">{fmtDate(group.date)}</span>}
+              </h3>
+              <ul class="grid gap-4 md:grid-cols-2">
+                {group.decks.map((deck) => (
+                  <li class="card p-5 md:p-6 flex flex-col gap-2">
+                    <span class="font-bold text-text">{deck.title}</span>
+                    <a href={`/speakers/${deck.speaker.slug}/`} class="text-sm text-text-light hover:text-primary transition-colors">{deck.speaker.data.name}</a>
+                    <a href={encodeURI(deck.url)} target="_blank" rel="noopener noreferrer" class="link-arrow mt-auto pt-1">
+                      Download slides (PDF)<span class="sr-only">: {deck.title} (opens in new tab)</span>
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class:list={['section', deckGroups.length > 0 && 'section-white']}>
     <div class="wrap">
       {resources.length > 0 ? (
         <div class="flex flex-col gap-16 md:gap-20">
@@ -106,7 +150,7 @@ const typeIcons = {
   </section>
 
   <!-- CTA Section -->
-  <section class="section section-white" aria-labelledby="share-resource-heading">
+  <section class="section" aria-labelledby="share-resource-heading">
     <div class="wrap flex flex-col gap-5 max-w-2xl">
       <span class="kicker">Share with the community</span>
       <h2 id="share-resource-heading" class="h-section text-text">Have a Resource to Share?</h2>

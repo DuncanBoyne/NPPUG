@@ -7,6 +7,8 @@ isOrganizer: true
 linkedin: https://www.linkedin.com/in/duncanboyne/
 website: https://www.duncanboyne.co.uk/
 image: /images/speakers/Duncan-Boyne.jpg
+seoTitle: "Duncan Boyne, NPPUG Organiser | Norwich"
+seoDescription: "Duncan Boyne helps run the Norfolk Power Platform User Group's free meetups in Norwich and is the founder of the East of England Summit."
 ---
 
 Duncan is one of the driving forces behind the Norfolk Power Platform User Group, working to build a vibrant community of Power Platform enthusiasts across the region.

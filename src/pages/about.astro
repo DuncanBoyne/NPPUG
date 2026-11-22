@@ -8,7 +8,11 @@ const allSpeakers = await getCollection('speakers');
 const organizers = allSpeakers.filter(s => s.data.isOrganizer);
 ---
 
-<BaseLayout title="About" description="Learn about the Norfolk Power Platform User Group - our mission, organizers, and how to get involved.">
+<BaseLayout
+  title="About"
+  fullTitle="About the Norfolk Power Platform User Group | NPPUG"
+  description="Who runs the Norfolk Power Platform User Group, who it is for, and how volunteers in Norwich run free meetups and the East of England Summit. Founded in 2025."
+>
   <Hero
     kicker="Who we are"
     title="About Us"
@@ -22,7 +26,7 @@ const organizers = allSpeakers.filter(s => s.data.isOrganizer);
         <span class="kicker">Our mission</span>
         <h2 id="mission-heading" class="h-section text-text">Our Mission</h2>
         <p class="lede">
-          The Norfolk Power Platform User Group is a community organization for Microsoft Power Platform
+          The Norfolk Power Platform User Group is a community organisation for Microsoft Power Platform
           enthusiasts across Norwich and Norfolk. We believe in the power of community - bringing people
           together to learn from each other, share experiences, and grow their skills.
         </p>
@@ -107,8 +111,8 @@ const organizers = allSpeakers.filter(s => s.data.isOrganizer);
   <section class="section section-white" aria-labelledby="organizers-heading">
     <div class="wrap flex flex-col gap-10">
       <div class="max-w-3xl flex flex-col gap-4">
-        <span class="kicker">The organizers</span>
-        <h2 id="organizers-heading" class="h-section text-text">Meet the Organizers</h2>
+        <span class="kicker">The organisers</span>
+        <h2 id="organizers-heading" class="h-section text-text">Meet the Organisers</h2>
         <p class="lede">
           Our volunteer team works to bring you great events and build a thriving community.
         </p>
@@ -169,7 +173,7 @@ const organizers = allSpeakers.filter(s => s.data.isOrganizer);
           <a href="/events/" class="btn btn-primary btn-lg">
             View Upcoming Events
           </a>
-          <a href="/contact/" class="btn btn-ghost-on-dark btn-lg">
+          <a href="/speak/" class="btn btn-ghost-on-dark btn-lg">
             Become a Speaker
           </a>
         </div>

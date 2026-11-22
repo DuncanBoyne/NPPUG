@@ -5,6 +5,8 @@ bio: Digital transformation specialist focused on enablement, adoption, and prac
 linkedin: https://www.linkedin.com/in/simonowendigital/
 website: https://www.empoweryour.world/
 image: /images/speakers/Simon-Owen.jpg
+seoTitle: "Simon Owen, Copilot Studio Enablement | NPPUG"
+seoDescription: "Simon Owen has spoken twice at the Norfolk Power Platform User Group: on building a Centre for Enablement with Copilot Studio, and on the impact of AI."
 ---
 
 Simon kicked off the meetup with an interactive session on **Building a Centre for Enablement with Copilot Studio**.

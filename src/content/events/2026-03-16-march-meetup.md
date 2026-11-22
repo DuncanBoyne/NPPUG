@@ -4,7 +4,8 @@ date: 2026-03-16T18:00:00
 endDate: 2026-03-16T20:00:00
 location: Virtual (Microsoft Teams)
 venue: Online
-description: Join us for our March virtual meetup featuring Power Platform talks from Melissa Hale and Emma-Claire Shaw!
+description: "Talks from the 16 March 2026 online Norfolk Power Platform User Group with Melissa Hale and Emma-Claire Shaw. See the speakers and our next free meetup."
+seoTitle: "Melissa Hale and Emma-Claire Shaw: NPPUG March 2026"
 speakers:
   - melissa-hale
   - emma-claire-shaw
@@ -13,7 +14,7 @@ isPast: false
 
 ## About This Event
 
-Join us online for an evening of Power Platform learning and community!
+We met online for an evening of Power Platform learning and community.
 
 This month's event was virtual, on Microsoft Teams.
 
@@ -23,6 +24,4 @@ This month's event was virtual, on Microsoft Teams.
 - **6:15 PM** - Sessions with Melissa Hale & Emma-Claire Shaw
 - **8:00 PM** - Close
 
-Whether you're new to Power Platform or an experienced developer, this meetup has something for everyone.
-
-We look forward to seeing you there!
+Whether you were new to Power Platform or an experienced developer, there was something for everyone.

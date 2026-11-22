@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import NextMeetup from '../components/NextMeetup.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../config';
+
+// Power BI and data talks given (or scheduled) at NPPUG, taken from the event files.
+// ponytail: hand-kept list; add a row when an event file gains a Power BI, Fabric or data talk.
+const TALKS = [
+  { event: '2026-11-03-november-meetup', title: 'Power BI performance tuning: 10 fixes that make reports faster', speaker: 'Olufemi Olamoyegun' },
+  { event: '2026-02-05-february-meetup', title: 'Using SQL Server alongside Power Apps without losing your sanity', speaker: 'Chris Hinchcliffe' },
+];
+const events = await getCollection('events');
+const talks = TALKS.map((t) => ({ ...t, e: events.find((e) => e.slug === t.event)! }))
+  .sort((a, b) => b.e.data.date.getTime() - a.e.data.date.getTime());
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const v = SITE.venue;
+const arrow = 'M5 12h14M13 6l6 6-6 6';
+---
+
+<BaseLayout
+  title="Power BI meetups in Norwich"
+  fullTitle="Power BI Meetups in Norwich | NPPUG"
+  description="Free Power BI and Microsoft Fabric talks in Norwich at the Norfolk Power Platform User Group. See past Power BI talks, the next meetup and how to register."
+>
+  <Hero
+    kicker="Power BI and Fabric"
+    title="Power BI meetups in Norwich"
+    subtitle="The Norfolk Power Platform User Group (NPPUG) is a free user group in Norwich. Power BI and Microsoft Fabric are part of what it covers, alongside the rest of the Power Platform."
+  />
+
+  <section class="section" aria-labelledby="who-heading">
+    <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-6 flex flex-col gap-4">
+        <h2 id="who-heading" class="h-section text-text">Who the meetups are for</h2>
+        <p class="text-[17px] leading-relaxed text-text-light">Anyone who works with Microsoft data and reporting tools, whether you are building your first report or looking after models for a whole team. The same meetups cover Power Apps, Power Automate, Dynamics 365 and Copilot, so you also meet people building the apps and flows that sit around a report.</p>
+        <p class="text-[17px] leading-relaxed text-text-light">Every meetup is free, and you register for each one on <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">Meetup<span class="sr-only"> (opens in new tab)</span></a>.</p>
+      </div>
+      <div class="lg:col-span-6 flex flex-col gap-4">
+        <h2 class="h-section text-text">Where and when</h2>
+        <p class="text-[17px] leading-relaxed text-text-light">In-person meetups are at {v.name}, {v.streetAddress}, {v.addressLocality} {v.postalCode}, from 18:00 to 20:30. Some meetups run online, with joining details through Meetup.</p>
+        <a href="/first-meetup/" class="link-arrow">
+          First time? What to expect
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow} /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" aria-labelledby="talks-heading">
+    <div class="wrap flex flex-col gap-8">
+      <div class="flex flex-col gap-4 max-w-3xl">
+        <span class="kicker">So far</span>
+        <h2 id="talks-heading" class="h-section text-text">Power BI and data talks at NPPUG</h2>
+        <p class="text-[15px] text-text-light">Not every meetup has a Power BI talk. Each event page lists its sessions.</p>
+      </div>
+      <ul class="grid gap-5 md:grid-cols-2">
+        {talks.map((t) => (
+          <li class="card p-6 md:p-7 flex flex-col gap-2">
+            <span class="text-sm font-semibold text-primary">{fmt(t.e.data.date)}</span>
+            <span class="h-card text-[20px] text-text">{t.title}</span>
+            <span class="text-[15px] text-text-light">{t.speaker}</span>
+            <a href={`/events/${t.e.slug}/`} class="link-arrow mt-auto pt-1">
+              {t.e.data.title}
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={arrow} /></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="next-heading">
+    <div class="wrap flex flex-col gap-8">
+      <div class="flex flex-col gap-4">
+        <span class="kicker">Coming up</span>
+        <h2 id="next-heading" class="h-section text-text">The next meetup</h2>
+      </div>
+      <NextMeetup />
+    </div>
+  </section>
+
+  <section class="section section-dark" aria-labelledby="speak-heading">
+    <div class="wrap grid gap-10 lg:grid-cols-2 lg:gap-12">
+      <div class="flex flex-col gap-4">
+        <span class="kicker kicker-on-dark">Speak</span>
+        <h2 id="speak-heading" class="h-section text-white">Bring a Power BI talk</h2>
+        <p class="lede text-text-on-dark">Power BI and Fabric talks are welcome. First-time speakers can start with 10 to 15 minutes, and an experienced NPPUG speaker will help you shape the talk.</p>
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <a href={SITE.sessionize} target="_blank" rel="noopener noreferrer" class="btn btn-primary">Submit on Sessionize<span class="sr-only"> (opens in new tab)</span></a>
+          <a href="/speak/" class="btn btn-ghost-on-dark">How speaking works</a>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <span class="kicker kicker-on-dark">The summit</span>
+        <h2 class="h-section text-white">East of England Summit</h2>
+        <p class="lede text-text-on-dark">The same volunteers run the East of England Summit, a two-day community conference in Norwich. The 2027 summit is on Friday 30 April and Saturday 1 May at The Space, Norwich.</p>
+        <div class="pt-2">
+          <a href={SITE.eoes} target="_blank" rel="noopener noreferrer" class="btn btn-ghost-on-dark">Visit eoes.co.uk<span class="sr-only"> (opens in new tab)</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

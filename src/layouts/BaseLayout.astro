@@ -7,7 +7,11 @@ import { abs, breadcrumbNode, organizationNode, websiteNode, OG_IMAGE } from '..
 
 interface Props {
   title: string;
+  // Exact <title> text. Without it the title is "{title} | NPPUG".
+  fullTitle?: string;
   description?: string;
+  // og:type, e.g. "article" for blog posts.
+  type?: string;
   // Share image (site path or absolute URL). Defaults to the 1200x630 site card.
   image?: string;
   imageAlt?: string;
@@ -18,6 +22,8 @@ interface Props {
 
 const {
   title,
+  fullTitle: fullTitleProp,
+  type = 'website',
   description = "Norfolk's Microsoft community. Free monthly meetups in Norwich for everyone working with Power Platform, Power BI, Fabric, Dynamics 365, and Copilot.",
   image,
   imageAlt,
@@ -29,8 +35,8 @@ const {
 const path = Astro.url.pathname.replace(/\/?$/, '/');
 const isHome = path === '/';
 const canonical = abs(path);
-const fullTitle = isHome ? `${SITE.name} | Free Microsoft meetups in Norwich` : `${title} | ${SITE.name}`;
-const shareTitle = isHome ? fullTitle : title;
+const fullTitle = fullTitleProp ?? `${title} | ${SITE.shortName}`;
+const shareTitle = fullTitle;
 const ogImage = abs(image ?? OG_IMAGE);
 const ogImageAlt = imageAlt ?? (image ? title : `${SITE.name}: free Microsoft meetups in Norwich`);
 
@@ -76,7 +82,7 @@ const graph = {
     <!-- Open Graph / Twitter -->
     <meta property="og:title" content={shareTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="en_GB" />

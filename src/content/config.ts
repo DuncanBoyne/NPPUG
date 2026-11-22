@@ -24,6 +24,8 @@ const eventsCollection = defineCollection({
       videoId: z.string(),
     })).default([]),
     registrationUrl: z.string().optional(),
+    // Optional exact <title> for the event page (the H1 stays `title`).
+    seoTitle: z.string().optional(),
     isPast: z.boolean().default(false),
     resources: z.array(z.object({
       title: z.string(),
@@ -46,6 +48,9 @@ const speakersCollection = defineCollection({
     github: z.string().optional(),
     website: z.string().optional(),
     isOrganizer: z.boolean().default(false),
+    // Optional exact <title> and meta description for the profile page.
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     presentations: z.array(z.object({
       title: z.string(),
       url: z.string(),

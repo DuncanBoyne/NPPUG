@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FirstMeetup from '../components/FirstMeetup.astro';
+import NextMeetup from '../components/NextMeetup.astro';
+import { SITE } from '../config';
+
+const v = SITE.venue;
+const address = `${v.name}, ${v.streetAddress}, ${v.addressLocality} ${v.postalCode}`;
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+---
+
+<BaseLayout
+  title="Your first meetup"
+  fullTitle="Your First NPPUG Meetup and How to Get There"
+  description="What happens at a free Norfolk Power Platform User Group meetup: the evening timeline, the venue on Crown Road in Norwich, online meetups and how to register."
+>
+  <Hero
+    kicker="First time?"
+    title="Your first NPPUG meetup and how to get there"
+    subtitle="Every NPPUG meetup is free. Here is who comes, where we meet, how the evening runs and how to get a place."
+  />
+
+  <section class="section" aria-label="The essentials">
+    <div class="wrap grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div class="card p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">Who it is for</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">People who work with, or are curious about, Microsoft Power Platform, Power BI, Fabric, Dynamics 365 and Copilot. Beginners are welcome, and so are experienced builders and architects.</p>
+      </div>
+      <div class="card p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">Where</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">In-person meetups are at {v.name}, {v.streetAddress}, {v.addressLocality} {v.postalCode}.</p>
+        <a href={mapUrl} target="_blank" rel="noopener noreferrer" class="link-arrow mt-auto">
+          Open in Google Maps<span class="sr-only"> (opens in new tab)</span>
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+      <div class="card p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">When</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">In-person meetups run from 18:00 to 20:30. Each event page lists the date and the talks.</p>
+        <a href="/events/" class="link-arrow mt-auto">
+          See the events
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </a>
+      </div>
+      <div class="card p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">Online meetups</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">Some meetups run online. You register on Meetup in the same way, and the joining details come through Meetup.</p>
+      </div>
+      <div class="card p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">Getting a place</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">Every meetup is free. Register for each one on Meetup so we know who is coming.</p>
+        <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm w-fit mt-auto">Join on Meetup<span class="sr-only"> (opens in new tab)</span></a>
+      </div>
+      <div class="card-tint p-7 flex flex-col gap-3">
+        <h2 class="h-card text-text">Access needs or questions</h2>
+        <p class="text-[15px] leading-relaxed text-text-light">If you have access needs, or a question before you come, ask the organisers on
+          <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">LinkedIn<span class="sr-only"> (opens in new tab)</span></a> or
+          <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">Meetup<span class="sr-only"> (opens in new tab)</span></a>.
+          Every meetup runs under our <a href="/code-of-conduct/" class="text-primary font-semibold hover:text-primary-dark">code of conduct</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <FirstMeetup />
+
+  <section class="section section-white" aria-labelledby="next-heading">
+    <div class="wrap flex flex-col gap-8">
+      <div class="flex flex-col gap-4">
+        <span class="kicker">Coming up</span>
+        <h2 id="next-heading" class="h-section text-text">The next meetup</h2>
+      </div>
+      <NextMeetup />
+    </div>
+  </section>
+</BaseLayout>

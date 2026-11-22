@@ -4,7 +4,11 @@ import Hero from '../components/Hero.astro';
 import { SITE } from '../config';
 ---
 
-<BaseLayout title="Contact" description="Get in touch with the Norfolk Power Platform User Group.">
+<BaseLayout
+  title="Contact"
+  fullTitle="Contact the Norfolk Power Platform User Group"
+  description="Contact the Norfolk Power Platform User Group about speaking, sponsoring or volunteering at our free Norwich meetups, or ask a question before your first visit."
+>
   <Hero
     kicker="Say hello"
     title="Contact Us"
@@ -62,7 +66,7 @@ import { SITE } from '../config';
 
         <!-- Organizers -->
         <div class="card-muted p-6 md:p-7 flex flex-col gap-3">
-          <h3 class="h-card text-text">Our Organizers</h3>
+          <h3 class="h-card text-text">Our Organisers</h3>
           <p class="text-[15px] leading-relaxed text-text-light">
             The Norfolk Power Platform User Group is run by volunteers who are passionate about the Power Platform community.
           </p>
@@ -134,7 +138,7 @@ import { SITE } from '../config';
           <p class="text-[15px] leading-relaxed text-text-light">
             Interested in sponsoring our events? We offer various sponsorship packages to help promote your brand to the Power Platform community.
           </p>
-          <a href="/sponsors/" class="link-arrow pt-1">
+          <a href="/sponsorship/" class="link-arrow pt-1">
             View sponsorship options
             <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>

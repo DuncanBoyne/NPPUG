@@ -5,6 +5,8 @@ bio: Operations Manager and project management veteran focused on making the tec
 linkedin: https://www.linkedin.com/in/emilydelva/
 website: https://sessionize.com/emily-delva
 image: /images/speakers/Emily-Delva.jpg
+seoTitle: "Emily Delva, Operations Manager | NPPUG Speaker"
+seoDescription: "Emily Delva, a Norwich-based operations manager, spoke at the October 2026 Norfolk Power Platform User Group on context switching and how to survive it at work."
 ---
 
 Emily Delva is an Operations Manager, project management veteran, and, as her self-description suggests, a "permanently exhausted pigeon."

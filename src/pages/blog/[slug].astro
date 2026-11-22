@@ -42,7 +42,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-GB', {
 });
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} schema={[postNode]}>
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image} type="article" schema={[postNode]}>
   <article>
     <!-- Header -->
     <header class="page-hero">

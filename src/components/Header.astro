@@ -1,5 +1,15 @@
 ---
 // Site header. Cream ground, hairline underneath, one call to action.
+import { getCollection } from 'astro:content';
+
+// "Next meetup" goes to the next event's own page when there is one.
+const now = new Date();
+const nextEvent = (await getCollection('events'))
+  .filter((e) => (e.data.endDate ?? e.data.date) >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())[0];
+const nextHref = nextEvent ? `/events/${nextEvent.slug}/` : '/events/';
+
+// Blog and Knowledge base are linked from the footer only.
 const navLinks = [
   { href: '/events/', label: 'Events' },
   {
@@ -18,15 +28,7 @@ const navLinks = [
       { href: '/sponsorship/', label: 'Become a sponsor' },
     ],
   },
-  {
-    label: 'Resources',
-    href: '/resources/',
-    children: [
-      { href: '/resources/', label: 'All resources' },
-      { href: '/blog/', label: 'Blog' },
-      { href: '/knowledge-base/', label: 'Knowledge base' },
-    ],
-  },
+  { href: '/resources/', label: 'Resources' },
   {
     label: 'About',
     href: '/about/',
@@ -47,8 +49,6 @@ const mobileLinks = [
   { href: '/sponsors/', label: 'Sponsors' },
   { href: '/sponsorship/', label: 'Become a sponsor' },
   { href: '/resources/', label: 'Resources' },
-  { href: '/blog/', label: 'Blog' },
-  { href: '/knowledge-base/', label: 'Knowledge base' },
   { href: '/about/', label: 'About us' },
   { href: '/team/', label: 'Our team' },
   { href: '/code-of-conduct/', label: 'Code of conduct' },
@@ -130,7 +130,7 @@ const isActive = (link: { href: string; label: string }) => {
       </div>
 
       <!-- Desktop CTA -->
-      <a href="/events/" class="btn btn-primary btn-sm hidden lg:inline-flex">
+      <a href={nextHref} class="btn btn-primary btn-sm hidden lg:inline-flex">
         Next meetup
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
@@ -166,7 +166,7 @@ const isActive = (link: { href: string; label: string }) => {
           </a>
         ))}
       </div>
-      <a href="/events/" class="btn btn-primary w-full mt-3">Next meetup</a>
+      <a href={nextHref} class="btn btn-primary w-full mt-3">Next meetup</a>
     </div>
   </nav>
 </header>

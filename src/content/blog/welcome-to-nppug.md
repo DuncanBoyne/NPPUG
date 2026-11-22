@@ -1,6 +1,6 @@
 ---
 title: Welcome to Norfolk Power Platform User Group
-description: Introducing our community for Microsoft Power Platform enthusiasts in Norwich and Norfolk.
+description: "Why we launched the Norfolk Power Platform User Group in Norwich in 2025: meetups with demos, guest speakers and pizza, free for every skill level."
 date: 2025-01-15
 author: duncan-boyne
 tags:
@@ -36,7 +36,7 @@ There are many ways to participate:
 
 ### Looking Ahead
 
-We have exciting plans for 2025 and beyond, including the **East of England Power Platform Summit** - a two-day conference celebrating our regional Power Platform community.
+We have exciting plans for 2025 and beyond, including the **East of England Power Platform Summit** (now the East of England Summit) - a two-day conference celebrating our regional Power Platform community.
 
 Stay tuned for more updates, and we hope to see you at our next event!
 

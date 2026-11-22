@@ -4,7 +4,8 @@ date: 2026-12-03T18:00:00
 endDate: 2026-12-03T20:30:00
 location: Norwich, Norfolk
 venue: Spaces Digital Hub, Townshend House
-description: Join us in person at Spaces Digital Hub in Norwich on Thursday 3 December. Tammy Briggs on building a company store with Power Platform code apps, and Simon Greenall on why people matter more than features in technology adoption. Free, with pizza.
+description: Free in-person Norfolk Power Platform User Group, Thursday 3 December 2026, Spaces Digital Hub, Norwich. Tammy Briggs on code apps, Simon Greenall on adoption.
+seoTitle: "Code Apps and Adoption: NPPUG 3 December 2026"
 speakers:
   - tammy-briggs
   - simon-greenall
@@ -54,8 +55,3 @@ Two talks, with pizza and networking in between.
 
 **Spaces Digital Hub, Townshend House**, 30 Crown Road, Norwich NR1 3DT. Centrally located, with good public transport links and nearby parking options.
 
----
-
-Places are free. Register below on Meetup so we know how much pizza to order.
-
-<a href="https://www.meetup.com/norfolk-power-platform-user-group/events/316592915/" target="_blank" rel="noopener noreferrer" class="cta-button">Register Now<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg><span class="sr-only"> (opens in new tab)</span></a>

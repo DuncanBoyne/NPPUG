@@ -19,6 +19,8 @@
 
 - [Home](https://www.nppug.co.uk/): the next meetup and how the evening runs
 - [Events](https://www.nppug.co.uk/events/): upcoming and past meetups, with speakers and registration links
+- [Your first meetup](https://www.nppug.co.uk/first-meetup/): the evening timeline, the venue and how to register
+- [Power BI meetups in Norwich](https://www.nppug.co.uk/power-bi-norwich/): Power BI and Fabric talks at NPPUG
 - [Speakers](https://www.nppug.co.uk/speakers/): people who have spoken at NPPUG
 - [Speak at NPPUG](https://www.nppug.co.uk/speak/): how to submit a talk
 - [Become a sponsor](https://www.nppug.co.uk/sponsorship/): sponsorship packages

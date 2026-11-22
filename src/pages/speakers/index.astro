@@ -8,7 +8,11 @@ const allSpeakers = await getCollection('speakers');
 const speakers = allSpeakers.filter(s => !s.data.isOrganizer);
 ---
 
-<BaseLayout title="Speakers" description="Meet the speakers who present at Norfolk Power Platform User Group events.">
+<BaseLayout
+  title="Speakers"
+  fullTitle="Speakers: Power Platform Talks in Norwich | NPPUG"
+  description="Meet the people who have spoken at the Norfolk Power Platform User Group in Norwich, on Copilot Studio, agentic AI, SQL Server, Power Apps and team delivery."
+>
   <Hero
     kicker="Speakers"
     title="Our Speakers"
@@ -55,7 +59,7 @@ const speakers = allSpeakers.filter(s => !s.data.isOrganizer);
         We welcome speakers of all experience levels. Whether it's your first time presenting or you're a seasoned pro, we'd love to hear from you.
       </p>
       <div class="pt-2">
-        <a href="/contact/" class="btn btn-primary btn-lg">
+        <a href="/speak/" class="btn btn-primary btn-lg">
           Submit a Talk Proposal
           <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />

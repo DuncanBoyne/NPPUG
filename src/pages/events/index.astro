@@ -39,7 +39,12 @@ const listNode = {
 };
 ---
 
-<BaseLayout title="Events" description="Upcoming and past events from the Norfolk Power Platform User Group." schema={[listNode]}>
+<BaseLayout
+  title="Events"
+  fullTitle="Power Platform Meetups in Norwich | NPPUG"
+  description="Next and past Norfolk Power Platform User Group meetups in Norwich and online. Free talks on Power Apps, Power BI, AI agents and more. Register on Meetup."
+  schema={[listNode]}
+>
   <Hero
     kicker="What's on"
     title="Events"
@@ -82,16 +87,11 @@ const listNode = {
             <div class="card p-8 md:p-10 text-center flex flex-col gap-3">
               <p class="text-lg font-semibold text-text">No upcoming events scheduled at the moment.</p>
               <p class="text-[15px] text-text-light">
-                Follow us on{' '}
-                <a
-                  href={SITE.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-primary font-semibold hover:text-primary-dark"
-                >
-                  LinkedIn<span class="sr-only"> (opens in new tab)</span>
-                </a>{' '}
-                to be notified when new events are announced.
+                Join the group on{' '}
+                <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">Meetup<span class="sr-only"> (opens in new tab)</span></a>{' '}
+                or follow us on{' '}
+                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>{' '}
+                to hear when new events are announced.
               </p>
             </div>
           )}

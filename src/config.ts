@@ -12,7 +12,7 @@ export const SITE = {
   // Open call for speakers (open until 9 Sep 2027). The old "-IP" call closed on 31 Aug 2026.
   sessionize: 'https://sessionize.com/norfolk-power-platform-user-group2468/',
   // East of England Summit (formerly the East of England Power Platform Summit, EoEPPS).
-  eoepps: 'https://www.eoes.co.uk/',
+  eoes: 'https://www.eoes.co.uk/',
   // Hyphenated copy. The old "NPPUG Sponsorship pack.pdf" stays in public/ so old links still work.
   sponsorPack: '/documents/nppug-sponsorship-pack.pdf',
   founded: 2025,

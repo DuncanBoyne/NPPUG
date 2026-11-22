@@ -4,7 +4,7 @@ import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
 import FirstMeetup from '../../components/FirstMeetup.astro';
 import { getCollection } from 'astro:content';
 import { SITE } from '../../config';
-import { isOnlineEvent } from '../../lib/events';
+import { decksForEvent, isOnlineEvent } from '../../lib/events';
 import { eventNode } from '../../lib/schema';
 
 export async function getStaticPaths() {
@@ -54,9 +54,18 @@ const endTime = event.data.endDate?.toLocaleTimeString('en-GB', {
 const isOnline = isOnlineEvent(event);
 const place = isOnline ? 'Online, on Teams' : `${event.data.venue}, ${event.data.location}`;
 const schema = [eventNode(event, eventSpeakers, isPast)];
+
+// Register buttons come only from `registrationUrl`, and only while the event is upcoming.
+const registerUrl = isPast ? undefined : event.data.registrationUrl;
+const registerLabel = registerUrl?.includes('meetup.com') ? 'Register on Meetup' : 'Register free';
+
+// Slides from speakers' `presentations` that name this event; skip any already listed under resources.
+const decks = decksForEvent(event, allSpeakers);
+const deckUrls = new Set(decks.map((d) => d.url));
+const resources = event.data.resources.filter((r) => !deckUrls.has(r.url));
 ---
 
-<BaseLayout title={event.data.title} description={event.data.description} schema={schema}>
+<BaseLayout title={event.data.title} fullTitle={event.data.seoTitle} description={event.data.description} schema={schema}>
   <!-- Hero -->
   <section class="page-hero">
     <div class="wrap">
@@ -92,15 +101,15 @@ const schema = [eventNode(event, eventSpeakers, isPast)];
 
         {!isPast && (
           <div class="pt-2">
-            {event.data.registrationUrl ? (
-              <a href={event.data.registrationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
-                Register free<span class="sr-only"> (opens in new tab)</span>
+            {registerUrl ? (
+              <a href={registerUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                {registerLabel}<span class="sr-only"> (opens in new tab)</span>
                 <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
               </a>
             ) : (
               <p class="lede">
                 <strong class="text-text">Free to attend, no ticket needed.</strong> Just turn up on the night, and
-                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">follow us on LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+                <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:text-primary-dark">join the group on Meetup<span class="sr-only"> (opens in new tab)</span></a>
                 for any updates.
               </p>
             )}
@@ -133,14 +142,37 @@ const schema = [eventNode(event, eventSpeakers, isPast)];
           </section>
         )}
 
+        <!-- Slides recorded on speaker profiles -->
+        {decks.length > 0 && (
+          <section class="flex flex-col gap-5" aria-labelledby="slides-heading">
+            <h2 id="slides-heading" class="h-card text-[26px] text-text">Slides from this meetup</h2>
+            <ul class="flex flex-col gap-3">
+              {decks.map((deck) => (
+                <li>
+                  <a href={encodeURI(deck.url)} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-3 p-4 hover:border-primary transition-colors">
+                    <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" />
+                    </svg>
+                    <span class="flex flex-col gap-0.5 min-w-0">
+                      <span class="font-semibold text-text">{deck.title}<span class="sr-only"> (PDF, opens in new tab)</span></span>
+                      <span class="text-sm text-text-light">{deck.speaker.data.name}</span>
+                    </span>
+                    <span class="pill ml-auto shrink-0">PDF</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <!-- Resources -->
-        {event.data.resources.length > 0 && (
+        {resources.length > 0 && (
           <section class="flex flex-col gap-5" aria-labelledby="resources-heading">
             <h2 id="resources-heading" class="h-card text-[26px] text-text">Resources</h2>
             <ul class="flex flex-col gap-3">
-              {event.data.resources.map((resource) => (
+              {resources.map((resource) => (
                 <li>
-                  <a href={resource.url} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-3 p-4 hover:border-primary transition-colors">
+                  <a href={encodeURI(resource.url)} target="_blank" rel="noopener noreferrer" class="card flex items-center gap-3 p-4 hover:border-primary transition-colors">
                     <svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" />
                     </svg>
@@ -221,13 +253,17 @@ const schema = [eventNode(event, eventSpeakers, isPast)];
         <div class="card-tint p-6 flex flex-col gap-3">
           <span class="kicker">Good to know</span>
           <p class="text-[15px] leading-relaxed text-text-light">Every NPPUG event is free and runs under our <a href="/code-of-conduct/" class="text-primary font-semibold hover:text-primary-dark">code of conduct</a>. Bring a colleague.</p>
+          <a href="/first-meetup/" class="link-arrow">
+            First time? What to expect
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
         </div>
       </aside>
     </div>
   </div>
 
-  <!-- First-timer promise (upcoming events only) -->
-  {!isPast && <FirstMeetup />}
+  <!-- First-timer promise: upcoming in-person events only (the timeline is the in-person evening) -->
+  {!isPast && !isOnline && <FirstMeetup />}
 
   <!-- Bottom conversion CTA -->
   <section class="section section-dark">
@@ -238,13 +274,13 @@ const schema = [eventNode(event, eventSpeakers, isPast)];
             <span class="kicker kicker-on-dark">See you there?</span>
             <h2 class="h-section text-white">It's free, it's friendly, and there's pizza. Bring a colleague.</h2>
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
-              {event.data.registrationUrl ? (
-                <a href={event.data.registrationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
-                  Register free<span class="sr-only"> (opens in new tab)</span>
+              {registerUrl ? (
+                <a href={registerUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                  {registerLabel}<span class="sr-only"> (opens in new tab)</span>
                 </a>
               ) : (
-                <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
-                  Follow for updates<span class="sr-only"> (opens in new tab)</span>
+                <a href={SITE.meetup} target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+                  Join on Meetup<span class="sr-only"> (opens in new tab)</span>
                 </a>
               )}
               <a href="/speak/" class="btn btn-ghost-on-dark btn-lg">Speak at a future meetup</a>
